@@ -1,7 +1,10 @@
 package digital.razgrad.LMP.entity;
 
+import digital.razgrad.LMP.constant.CourseStatus;
+import digital.razgrad.LMP.constant.CourseType;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -14,4 +17,11 @@ public class Course {
     private Set<Module> moduleSet;
     @ManyToMany(mappedBy = "courseSet")
     private Set<Teacher> teacherSet;
+    @Enumerated(EnumType.STRING)
+    private CourseType type;
+    @Enumerated(EnumType.STRING)
+    private CourseStatus status;
+    @Column(nullable = true)
+    private String city;
+    private LocalDate startDate;
 }
