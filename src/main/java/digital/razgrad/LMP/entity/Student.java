@@ -1,6 +1,6 @@
 package digital.razgrad.LMP.entity;
 
-import digital.razgrad.LMP.constant.Role;
+import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -23,7 +23,22 @@ public class Student extends User {
     private Set<Module> moduleSet;
 
     public Student() {
-        setRole(Role.ROLE_STUDENT);
+        setUserRole(UserRole.ROLE_STUDENT);
     }
 
+    public Set<Test> getTestSet() {
+        return testSet;
+    }
+
+    public void setTestSet(Set<Test> testSet) {
+        this.testSet = testSet;
+    }
+
+    public Set<Module> getModuleSet() {
+        return moduleSet;
+    }
+
+    public void setModuleSet(Set<Module> moduleSet) {
+        this.moduleSet = moduleSet;
+    }
 }
