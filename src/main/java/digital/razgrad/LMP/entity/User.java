@@ -1,6 +1,6 @@
 package digital.razgrad.LMP.entity;
 
-import digital.razgrad.LMP.constant.Role;
+import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -36,7 +36,7 @@ public abstract class User {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ROLE_STUDENT'")
-    private Role role;
+    private UserRole userRole;
     @Column(columnDefinition = "boolean DEFAULT '1'")
     private boolean enabled;
     @Size(min = 3, message = "Минимален брой символи 3!")
@@ -101,12 +101,12 @@ public abstract class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public boolean isEnabled() {

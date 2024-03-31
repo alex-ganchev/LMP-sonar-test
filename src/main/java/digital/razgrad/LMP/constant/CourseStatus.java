@@ -1,7 +1,7 @@
 package digital.razgrad.LMP.constant;
 
 public enum CourseStatus {
-    ACTIVE("Активен"),
+    UPCOMING("Предстоящ"),
     STARTED("Започнал"),
     FINISHED("Приключил"),
     CANCELLED("Отменен"),
