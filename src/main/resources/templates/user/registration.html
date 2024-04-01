@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../style_new.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <div th:replace="~{header.html}"></div>
+    <title>Регистриране на потребител</title>
+</head>
+<body>
+<h2 class="text-center p-4 text-white">РЕГИСТРАЦИЯ</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 col-auto">
+            <form action="" th:action="@{/registration}" th:object="${userRegistrationDTO}" method="post">
+                <div class="form-group">
+                    <label class="text-white" for="username">Потребителско име*</label>
+                    <div class="message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Потребителско име">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="password">Парола*</label>
+                    <div class="message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Парола">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="repeatPassword">Повтори паролата*</label>
+                    <div class="message" th:text="${passwordMessage!=null}?${passwordMessage}:''"></div>
+                    <div class="message" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}"></div>
+                    <input type="password" class="form-control" id="repeatPassword" th:field="*{repeatPassword}" placeholder="Повтори паролата">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="firstName">Име*</label>
+                    <div class="message" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Име">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="lastName">Фамилия*</label>
+                    <div class="message" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Фамилия">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="lastName">Електронна поща*</label>
+                    <div class="message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Електронна поща">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="age">Години*</label>
+                    <div class="message" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+                    <input type="number" class="form-control" id="age" th:field="*{age}" placeholder="Години">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="age">Град*</label>
+                    <div class="message" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                    <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Град">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="age">Интереси</label>
+                    <div class="message" th:if="${#fields.hasErrors('interests')}" th:errors="*{interests}"></div>
+                    <input type="text" class="form-control" id="interests" th:field="*{interests}" placeholder="Опишете Вашите интереси">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="age">Опит</label>
+                    <div class="message" th:if="${#fields.hasErrors('experience')}" th:errors="*{experience}"></div>
+                    <input type="text" class="form-control" id="experience" th:field="*{experience}" placeholder="Опишете Вашият опит">
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-success btn-form" type="submit">Регистрирай</button>
+                    </div>
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../'">Отказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--<div class="savemessage">-->
+<!--    <p style="text-align:center" th:text="|${message}|"/></p>-->
+<!--</div>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

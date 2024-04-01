@@ -1,0 +1,74 @@
+<div class="menu">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand me-5" href="../">
+                <img src="/images/icon.png" alt="" width="33" height="33" class="d-inline-block align-text-top">
+                 ОБУЧЕНИЯ
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../">НАЧАЛО</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="courseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            КУРСОВЕ
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../course/add">ДОБАВИ</a></li>
+                            <li><a class="dropdown-item" href="../course/list">СПИСЪК</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="moduleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            МОДУЛИ
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../module/add">ДОБАВИ</a></li>
+                            <li><a class="dropdown-item" href="../module/list">СПИСЪК</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="lectureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ЛЕКЦИИ
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../lecture/add">ДОБАВИ</a></li>
+                            <li><a class="dropdown-item" href="../lecture/list">СПИСЪК</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ТЕСТОВЕ
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../test/add">ДОБАВИ</a></li>
+                            <li><a class="dropdown-item" href="../test/list">СПИСЪК</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>
+                             ПОТРЕБИТЕЛ
+                              </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="../login">ВХОД</a></li>
+                            <li><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
+                            <li>
+                                <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
+                                <form th:action="@{/logout?redirect=../}" method="post">
+                                    <button type="submit" class="dropdown-item">ИЗХОД</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
