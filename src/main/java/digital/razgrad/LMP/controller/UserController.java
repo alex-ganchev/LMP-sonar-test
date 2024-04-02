@@ -4,13 +4,13 @@ import digital.razgrad.LMP.dto.UserRegistrationDTO;
 import digital.razgrad.LMP.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -30,12 +30,12 @@ public class UserController {
 
     @PostMapping("/registration")
     private String addUser(@Valid @ModelAttribute UserRegistrationDTO userRegistrationDTO, BindingResult bindingResult, Model model) {
-        return userService.addUser(userRegistrationDTO, bindingResult, model);
+        return userService.saveUser(userRegistrationDTO, bindingResult, model);
     }
 
     @GetMapping("/profile")
-    private String showProfile(@RequestParam Long userId, Model model) {
-        return userService.showProfile(userId,model);
+    private String showProfile(Authentication authentication, Model model) {
+        return userService.showProfile(authentication,model);
     }
 
     @GetMapping("/access-denied")

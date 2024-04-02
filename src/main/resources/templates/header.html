@@ -62,7 +62,7 @@
                             <li th:unless="${#authorization.expression('isAuthenticated()')}" ><a class="dropdown-item" href="../login">ВХОД</a></li>
                             <li th:unless="${#authorization.expression('isAuthenticated()')}"><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
                             <li th:unless="${#authorization.expression('!isAuthenticated')}">
-                                <a class="dropdown-item" th:href="@{'../profile?userId=' + ${#authentication.principal.id}}">ПРОФИЛ</a>
+                                <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
                                 <form th:action="@{/logout?redirect=../}" method="post">
                                     <button type="submit" class="dropdown-item">ИЗХОД</button>
                                 </form>
