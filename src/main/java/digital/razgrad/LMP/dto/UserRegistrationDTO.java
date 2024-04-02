@@ -1,12 +1,9 @@
 package digital.razgrad.LMP.dto;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserRegistrationDTO {
-
 
     @Size(min = 4, message = "Минимален брой символи 4!")
     @Size(max = 20, message = "Максимален брой символи 20!")
@@ -31,16 +28,13 @@ public class UserRegistrationDTO {
     @Size(max = 20, message = "Максимален брой символи 20!")
     private String repeatPassword;
     @NotNull
-    @Column(nullable = false)
     private int age;
     @Size(min = 3, message = "Минимален брой символи 3!")
     @Size(max = 20, message = "Максимален брой символи 20!")
-    @Column(nullable = false)
     private String city;
 
-    @Column(nullable = true)
     private String experience;
-    @Column(nullable = true)
+
     private String interests;
 
 
