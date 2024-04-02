@@ -3,6 +3,9 @@ package digital.razgrad.LMP.entity;
 import digital.razgrad.LMP.constant.CourseStatus;
 import digital.razgrad.LMP.constant.CourseType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -23,7 +26,10 @@ public class Course {
     private CourseStatus status;
     @Column(nullable = true)
     private String city;
+    @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
+    @Size(min = 4, message = "Минимален брой символи 4!")
+    @Size(max = 20, message = "Максимален брой символи 20!")
     @Column(columnDefinition = "TEXT")
     private String description;
 
