@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    private String showProfile() {
-        return "/user/profile";
+    private String showProfile(@RequestParam Long userId, Model model) {
+        return userService.showProfile(userId,model);
     }
 
     @GetMapping("/access-denied")

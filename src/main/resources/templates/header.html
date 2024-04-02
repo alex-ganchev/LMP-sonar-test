@@ -51,15 +51,18 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>
+                           <span th:if="${#authorization.expression('isAuthenticated()')}">
+                            <span style="text-transform:uppercase" th:text="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}"></span>
+                            </span>
+                            <span th:unless="${#authorization.expression('isAuthenticated()')}">
                              ПОТРЕБИТЕЛ
                               </span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../login">ВХОД</a></li>
-                            <li><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
-                            <li>
-                                <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
+                            <li th:unless="${#authorization.expression('isAuthenticated()')}" ><a class="dropdown-item" href="../login">ВХОД</a></li>
+                            <li th:unless="${#authorization.expression('isAuthenticated()')}"><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
+                            <li th:unless="${#authorization.expression('!isAuthenticated')}">
+                                <a class="dropdown-item" th:href="@{'../profile?userId=' + ${#authentication.principal.id}}">ПРОФИЛ</a>
                                 <form th:action="@{/logout?redirect=../}" method="post">
                                     <button type="submit" class="dropdown-item">ИЗХОД</button>
                                 </form>

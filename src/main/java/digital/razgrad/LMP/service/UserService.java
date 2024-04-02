@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,6 +38,14 @@ public class UserService {
         user.setEnabled(true);
         user.setUserRole(UserRole.ROLE_STUDENT);
         userRepository.save(user);
-        return "redirect:/user/login";
+        return "redirect:/login";
+    }
+    public String showProfile(Long userId, Model model) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isPresent()){
+            model.addAttribute("loggedUser",optionalUser.get());
+            return "/user/profile";
+        }
+        return "redirect:/";
     }
 }

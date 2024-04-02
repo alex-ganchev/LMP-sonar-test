@@ -2,8 +2,6 @@ package digital.razgrad.LMP.entity;
 
 import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="users")
@@ -14,24 +12,13 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name", nullable = false)
-  //  @NotNull(message = "Полето не може да е празно!")
-  //  @Size(min = 4, message = "Минимален брой символи 4!")
- //   @Size(max = 20, message = "Максимален брой символи 20!")
     private String firstName;
     @Column(name = "last_name", nullable = false)
-  //  @NotNull(message = "Полето не може да е празно!")
-  //  @Size(min = 4, message = "Минимален брой символи 4!")
- //   @Size(max = 20, message = "Максимален брой символи 20!")
     private String lastName;
-  //  @Size(min = 4, message = "Минимален брой символи 4!")
-   // @Size(max = 20, message = "Максимален брой символи 20!")
     @Column(nullable = false, unique = true)
     private String username;
-  //  @Size(min = 5, message = "Минимален брой символи 5!")
     @Column(nullable = false, unique = true)
     private String email;
-  //  @Size(min = 4, message = "Минимален брой символи 4!")
-  //  @Size(max = 20, message = "Максимален брой символи 20!")
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
@@ -39,14 +26,10 @@ public abstract class User {
     private UserRole userRole;
     @Column(columnDefinition = "boolean DEFAULT '1'")
     private boolean enabled;
-   // @NotNull
     @Column(nullable = false)
     private int age;
-//    @Size(min = 3, message = "Минимален брой символи 3!")
-//    @Size(max = 20, message = "Максимален брой символи 20!")
     @Column(nullable = false)
     private String city;
-
     @Column(nullable = true)
     private String experience;
     @Column(nullable = true)
