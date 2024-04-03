@@ -35,5 +35,10 @@ public class CourseController {
     private String saveCourse(@Valid @ModelAttribute Course course, BindingResult bindingResult, Model model) {
         return courseService.saveCourse(course, bindingResult, model);
     }
+    @GetMapping("/list")
+    private String listAllCourse(Model model) {
+        model.addAttribute("courseList", courseRepository.findAll());
+        return "/course/list";
+    }
 
 }

@@ -1,6 +1,7 @@
 package digital.razgrad.LMP.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,7 +12,10 @@ public class Module {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "TEXT")
+    @Size(min = 1, message = "Минимален брой символи 1!")
+    @Size(max = 40, message = "Максимален брой символи 40!")
+    private String name;
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
     private LocalDate startDate;
     @ManyToOne
@@ -28,6 +32,14 @@ public class Module {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

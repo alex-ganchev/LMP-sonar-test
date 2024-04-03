@@ -21,6 +21,7 @@ public class CourseService {
             model.addAttribute("statusList", CourseStatus.values());
             return "/course/add";
         }
+        course.setStatus(CourseStatus.UPCOMING);
         courseRepository.save(course);
         return "redirect:/course/add";
     }

@@ -16,6 +16,11 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Size(min = 1, message = "Минимален брой символи 1!")
+    @Size(max = 40, message = "Максимален брой символи 40!")
+    private String name;
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String description;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Module> moduleSet;
     @ManyToMany(mappedBy = "courseSet")
@@ -28,10 +33,6 @@ public class Course {
     private String city;
     @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
-    @Size(min = 4, message = "Минимален брой символи 4!")
-    @Size(max = 20, message = "Максимален брой символи 20!")
-    @Column(columnDefinition = "TEXT")
-    private String description;
 
     public Long getId() {
         return id;
@@ -95,5 +96,13 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
