@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="lectures")
+@Table(name = "lectures")
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +16,16 @@ public class Lecture {
     private String name;
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
-    @Column(nullable = true)
-    private String presentation;
+    @Lob
+    @Column(nullable = true, columnDefinition="MEDIUMBLOB")
+    private byte[] presentation;
     @Column(nullable = true)
     private String video;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "test_id", referencedColumnName = "id")
     private Test test;
     private LocalDate startDate;
+    @Size(min = 1, message = "Изберете модул!")
     @ManyToOne
     @JoinColumn(name = "module_id")
     private Module module;
@@ -52,11 +54,11 @@ public class Lecture {
         this.description = description;
     }
 
-    public String getPresentation() {
+    public byte[] getPresentation() {
         return presentation;
     }
 
-    public void setPresentation(String presentation) {
+    public void setPresentation(byte[] presentation) {
         this.presentation = presentation;
     }
 

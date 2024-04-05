@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/lecture")
 public class LectureController {
@@ -22,39 +24,36 @@ public class LectureController {
     @Autowired
     private LectureRepository lectureRepository;
 
-    //    @GetMapping("/add")
-//    private String addLecture(Model model){
-//        model.addAttribute("moduleList", moduleRepository.findAll());
-//        model.addAttribute("lecture", new Lecture());
-//        return "/lecture/add";
-//    }
-    @GetMapping("/select")
+    @GetMapping("/select-course")
     private String selectCourse(Model model) {
         model.addAttribute("courseList", courseRepository.findAll());
-        //model.addAttribute("lecture", new Lecture());
-        return "/lecture/select";
+        return "/lecture/select-course";
     }
-//    @PostMapping("/select")
-//    private String selectCourse(Long courseId, Model model) {
-//            model.addAttribute("moduleList", courseRepository.findById(courseId).get().getModuleSet());
-//            model.addAttribute("lecture", new Lecture());
-//            return "/lecture/add";
-//    }
-    @GetMapping("/add")
-    private String addLecture(@RequestParam Long courseId, Model model) {
-        model.addAttribute("moduleList", courseRepository.findById(courseId).get().getModuleSet());
-        model.addAttribute("lecture", new Lecture());
-        return "/lecture/add";
+
+    @PostMapping("/select-course")
+    private String selectCourse(@RequestParam Long id, Model model) {
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+        if (optionalCourse.isPresent()) {
+            model.addAttribute("moduleList", optionalCourse.get().getModuleSet());
+            model.addAttribute("lecture", new Lecture());
+            return "/lecture/add";
+        }
+        return "redirect:/lecture/select-course";
     }
 
     @PostMapping("/add")
-    private String saveLecture(@Valid @ModelAttribute Lecture lecture, @RequestParam Long courseId, BindingResult bindingResult, Model model) {
+    private String saveLecture(@Valid @ModelAttribute Lecture lecture, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("moduleList", courseRepository.findById(courseId).get().getModuleSet());
-            //model.addAttribute("lecture", new Lecture());
+            // model.addAttribute("lecture", lecture);
             return "/lecture/add";
         }
         lectureRepository.save(lecture);
-        return "redirect:/lecture/add";
+        return "/lecture/select-course";
+    }
+
+    @GetMapping("/list")
+    private String listLecture(Model model) {
+        model.addAttribute("lectureList", lectureRepository.findAll());
+        return ("/lecture/list");
     }
 }
