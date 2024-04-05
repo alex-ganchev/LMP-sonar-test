@@ -11,10 +11,10 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4 col-auto">
-            <form action="" th:action="@{/lecture/add}" th:object="${courseId}" method="post">
+            <form action="" th:action="@{/lecture/select-course}" th:object="${id}" method="post">
                 <div class="form-group">
                     <label class="text-white" for="course">Курс</label>
-                    <select class="form-select" id="course">
+                    <select class="form-select" name="id" id="course">
                         <option th:each="course : ${courseList}" th:text="${course.name}" th:value="${course.id}">
                     </select>
                 </div>

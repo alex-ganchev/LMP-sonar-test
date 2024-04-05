@@ -13,6 +13,12 @@
         <div class="col-4 col-auto">
             <form action="" th:action="@{/lecture/add}" th:object="${lecture}" method="post">
                 <div class="form-group">
+                    <label class="text-white" for="module">Модул*</label>
+                    <select class="form-select" id="module" th:field="*{module}">
+                        <option th:each="module : ${moduleList}" th:text="${module.name}" th:value="${module.id}">
+                    </select>
+                </div>
+                <div class="form-group">
                     <label class="text-white" for="name">Лекция*</label>
                     <div class="message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Наименование на лекцията">
@@ -22,18 +28,12 @@
                     <input type="text" class="form-control" id="description" th:field="*{description}" placeholder="Описание на лекцията">
                 </div>
                 <div class="form-group">
-                    <label class="text-white" for="module">Модул*</label>
-                    <select class="form-select" id="module" th:field="*{module}">
-                        <option th:each="module : ${moduleList}" th:text="${module.name}" th:value="${module.id}">
-                    </select>
-                </div>
-                <div class="form-group">
                     <label class="text-white" for="video">Видео</label>
                     <input type="text" class="form-control" id="video" th:field="*{video}" placeholder="Видео">
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="presentation">Презентация</label>
-                    <input type="text" class="form-control" id="presentation" th:field="*{presentation}" placeholder="Презентация">
+                    <input type="file" class="form-control" id="presentation" th:field="*{presentation}" placeholder="Презентация">
                 </div>
 
                 <div class="row justify-content-center ">
