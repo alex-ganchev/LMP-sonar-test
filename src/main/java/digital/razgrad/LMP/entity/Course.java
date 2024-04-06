@@ -22,6 +22,7 @@ public class Course {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OrderBy("id")
     private Set<Module> moduleSet;
     @ManyToMany(mappedBy = "courseSet")
     private Set<Teacher> teacherSet;

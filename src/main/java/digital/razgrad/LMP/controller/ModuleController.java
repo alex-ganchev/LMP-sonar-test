@@ -1,6 +1,5 @@
 package digital.razgrad.LMP.controller;
 
-import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.entity.Module;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.ModuleRepository;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/module")
@@ -33,9 +33,10 @@ public class ModuleController {
     }
 
     @PostMapping("/add")
-    private String saveModule(@Valid @ModelAttribute Module module, BindingResult bindingResult, Model model) {
-        return moduleService.saveModule(module, bindingResult, model);
+    private String saveModule(@Valid @ModelAttribute Module module, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        return moduleService.saveModule(module, bindingResult, redirectAttributes, model);
     }
+
     @GetMapping("/list")
     private String listAllModules(Model model) {
         model.addAttribute("moduleList", moduleRepository.findAll());

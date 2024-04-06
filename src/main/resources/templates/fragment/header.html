@@ -1,7 +1,8 @@
+<link th:replace="~{fragment/config.html}">
 <div class="menu">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand me-5" href="../">
+            <a class="navbar-brand me-5" href="../..">
                 <img src="/images/icon.png" alt="" width="33" height="33" class="d-inline-block align-text-top">
                  ОБУЧЕНИЯ
             </a>
@@ -11,7 +12,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../">НАЧАЛО</a>
+                        <a class="nav-link active" aria-current="page" href="../..">НАЧАЛО</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="courseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -61,6 +62,7 @@
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                             <li th:unless="${#authorization.expression('isAuthenticated()')}" ><a class="dropdown-item" href="../login">ВХОД</a></li>
                             <li th:unless="${#authorization.expression('isAuthenticated()')}"><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
+                            <li th:unless="${#authorization.expression('!isAuthenticated()')}"><a class="dropdown-item" href="../user/list">СПИСЪК</a></li>
                             <li th:unless="${#authorization.expression('!isAuthenticated')}">
                                 <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
                                 <form th:action="@{/logout?redirect=../}" method="post">

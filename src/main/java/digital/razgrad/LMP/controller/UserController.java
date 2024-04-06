@@ -37,6 +37,10 @@ public class UserController {
     private String showProfile(Authentication authentication, Model model) {
         return userService.showProfile(authentication,model);
     }
+    @GetMapping("/user/list")
+    private String listAllUsers(Model model) {
+      return userService.listAllUsers(model);
+    }
 
     @GetMapping("/access-denied")
     private String accessDenied() {

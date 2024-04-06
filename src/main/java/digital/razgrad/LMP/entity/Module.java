@@ -1,6 +1,7 @@
 package digital.razgrad.LMP.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -17,13 +18,16 @@ public class Module {
     private String name;
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
+    @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
     @ManyToMany(mappedBy = "moduleSet")
+    @OrderBy("id")
     private Set<Student> studentSet;
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    @OrderBy("id")
     private Set<Lecture> lectureSet;
 
     public Long getId() {

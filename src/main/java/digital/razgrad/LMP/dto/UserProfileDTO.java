@@ -3,6 +3,7 @@ package digital.razgrad.LMP.dto;
 import digital.razgrad.LMP.constant.UserRole;
 
 public class UserProfileDTO {
+    private Long id;
 
     private String firstName;
 
@@ -20,6 +21,14 @@ public class UserProfileDTO {
     private String experience;
 
     private String interests;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
