@@ -1,6 +1,7 @@
 package digital.razgrad.LMP.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -25,8 +26,8 @@ public class Lecture {
     @JoinColumn(name = "test_id", referencedColumnName = "id")
     private Test test;
     private LocalDate startDate;
-    @Size(min = 1, message = "Изберете модул!")
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "module_id")
     private Module module;
 
