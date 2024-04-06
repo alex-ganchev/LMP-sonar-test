@@ -25,6 +25,7 @@ public class Lecture {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "test_id", referencedColumnName = "id")
     private Test test;
+    @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
     @ManyToOne
     @NotNull

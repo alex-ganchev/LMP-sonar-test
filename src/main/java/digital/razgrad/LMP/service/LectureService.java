@@ -30,7 +30,7 @@ public class LectureService {
             model.addAttribute("lecture", new Lecture());
             return "/lecture/add";
         }
-        redirectAttributes.addFlashAttribute("message", "Избраният курс не няма модули. Не можете да въвеждате лекции!");
+        redirectAttributes.addFlashAttribute("message", "Избраният курс няма модули. Не можете да въвеждате лекции!");
         return "redirect:/lecture/select-course";
     }
     public String saveLecture(Lecture lecture, BindingResult bindingResult, Model model) {

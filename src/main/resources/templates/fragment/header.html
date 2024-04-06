@@ -62,6 +62,7 @@
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                             <li th:unless="${#authorization.expression('isAuthenticated()')}" ><a class="dropdown-item" href="../login">ВХОД</a></li>
                             <li th:unless="${#authorization.expression('isAuthenticated()')}"><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
+                            <li th:unless="${#authorization.expression('!isAuthenticated()')}"><a class="dropdown-item" href="../user/list">СПИСЪК</a></li>
                             <li th:unless="${#authorization.expression('!isAuthenticated')}">
                                 <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
                                 <form th:action="@{/logout?redirect=../}" method="post">
