@@ -1,7 +1,9 @@
 package digital.razgrad.LMP.hellper;
 
 import digital.razgrad.LMP.entity.Course;
+import digital.razgrad.LMP.entity.User;
 import digital.razgrad.LMP.repository.CourseRepository;
+import digital.razgrad.LMP.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.Optional;
 public class EntityValidator {
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private UserRepository userRepository;
     public String checkSaveSuccess(Object object) {
         if (object != null) {
             return "Успешен запис в базата данни!";
