@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:replace="~{fragment/header.html}">
+    <title>Редактиране на потребител</title>
+</head>
+<body>
+<h2 class="text-center p-4 text-white">РЕДАКТИРАНЕ НА ПОТРЕБИТЕЛ</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 col-auto">
+            <form action="" th:action="@{/user/edit}" th:object="${userUpdateDTO}" method="post">
+                <input type="hidden" name="id" th:value="${userUpdateDTO.id}"/>
+                <div class="form-group">
+                    <label class="text-white" for="userRole">Роля*</label>
+                    <select class="form-select" id="userRole" th:field="*{userRole}">
+                        <option th:each="role : ${roleList}" th:text="${role.getLabel}" th:value="${role.name}">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="username">Потребителско име*</label>
+                    <div class="message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Потребителско име">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="password">Парола*</label>
+                    <div class="message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Парола">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="repeatPassword">Повтори паролата*</label>
+                    <div class="message" th:text="${passwordMessage!=null}?${passwordMessage}:''"></div>
+                    <div class="message" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}"></div>
+                    <input type="password" class="form-control" id="repeatPassword" th:field="*{repeatPassword}" placeholder="Повтори паролата">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="firstName">Име*</label>
+                    <div class="message" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Име">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="lastName">Фамилия*</label>
+                    <div class="message" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Фамилия">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="email">Електронна поща*</label>
+                    <div class="message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Електронна поща">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="age">Години*</label>
+                    <div class="message" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+                    <input type="number" class="form-control" id="age" th:field="*{age}" placeholder="Години">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="city">Град*</label>
+                    <div class="message" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                    <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Град">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="interests">Интереси</label>
+                    <div class="message" th:if="${#fields.hasErrors('interests')}" th:errors="*{interests}"></div>
+                    <input type="text" class="form-control" id="interests" th:field="*{interests}" placeholder="Опишете Вашите интереси">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="experience">Опит</label>
+                    <div class="message" th:if="${#fields.hasErrors('experience')}" th:errors="*{experience}"></div>
+                    <input type="text" class="form-control" id="experience" th:field="*{experience}" placeholder="Опишете Вашият опит">
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-success btn-form" type="submit">Редактирай</button>
+                    </div>
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../user/list'">Отказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|"/></p>
+</div>
+</body>
+</html>

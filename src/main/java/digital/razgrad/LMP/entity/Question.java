@@ -2,7 +2,10 @@ package digital.razgrad.LMP.entity;
 
 import digital.razgrad.LMP.constant.AnswerType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,15 +14,18 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private Set<Answer> answerSet;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lecture_id", referencedColumnName = "id")
+    //@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answerList;
+    @ManyToOne
+    @JoinColumn(name = "lecture_id")
     private Lecture lecture;
     @Enumerated(EnumType.STRING)
     private AnswerType answerType;
+
     @Column(columnDefinition = "TEXT")
     private String question;
+
     private int points;
 
     public Long getId() {
@@ -30,12 +36,12 @@ public class Question {
         this.id = id;
     }
 
-    public Set<Answer> getAnswerSet() {
-        return answerSet;
+    public List<Answer> getAnswerList() {
+        return answerList;
     }
 
-    public void setAnswerSet(Set<Answer> answerSet) {
-        this.answerSet = answerSet;
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
     }
 
     public Lecture getLecture() {

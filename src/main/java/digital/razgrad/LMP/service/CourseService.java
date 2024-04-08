@@ -28,7 +28,6 @@ public class CourseService {
             return "/course/add";
         }
         course.setStatus(CourseStatus.UPCOMING);
-        model.addAttribute("message", entityValidator.checkSaveSuccess(courseRepository.save(course)));
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(courseRepository.save(course)));
         return "redirect:/course/add";
     }
@@ -49,7 +48,6 @@ public class CourseService {
             model.addAttribute("statusList", CourseStatus.values());
             return "/course/edit";
         }
-        model.addAttribute("message", entityValidator.checkSaveSuccess(courseRepository.save(course)));
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(courseRepository.save(course)));
         return "redirect:/course/list";
     }
