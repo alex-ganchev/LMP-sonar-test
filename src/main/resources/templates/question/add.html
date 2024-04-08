@@ -18,9 +18,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="text-white" for="question">Въпрос</label>
+                    <label class="text-white" for="question">Въпрос*</label>
                     <div class="message" th:if="${#fields.hasErrors('question')}" th:errors="*{question}"></div>
-                    <input type="text" class="form-control" id="question" th:field="*{question}" placeholder="Въпрос">
+                    <input type="text" class="form-control" id="question" th:field="*{question}">
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="answerType">Верни отговори*</label>
@@ -29,18 +29,18 @@
                     </select>
                 </div>
                 <div th:each="answer, itemStat : *{answerList}">
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label class="text-white" for="answer">Отговор</label>
-                        <input type="text" class="form-control" id="answer" th:field="*{answerList[__${itemStat.index}__].answer}" placeholder="Отговор">
+                        <input type="text" class="form-control" id="answer" th:field="*{answerList[__${itemStat.index}__].answer}" >
                     </div>
                     <div class="form-group">
                         <label class="form-check-label text-white">
-                            <input type="checkbox" class="form-check-input" th:field="*{answerList[__${itemStat.index}__].correct}"> Верен отговор
+                            <input type="checkbox" class="form-check-input" th:field="*{answerList[__${itemStat.index}__].correct}"> Верен
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="text-white" for="points">Точки</label>
+                    <label class="text-white" for="points">Точки*</label>
                     <div class="message" th:if="${#fields.hasErrors('points')}" th:errors="*{points}"></div>
                     <input type="number" class="form-control" id="points" th:field="*{points}" placeholder="Точки">
                 </div>

@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2 class="text-center p-4 text-white ">СПИСЪК НА ЛЕКЦИИТЕ</h2>
-<div class="container col-8">
+<div class="container col-11">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <div class="col d-flex justify-content-center align-items-center">
             <table class="table table-striped table-dark table-bordered table-hover">
@@ -34,7 +34,16 @@
                     <td><span th:text="${lecture.description}"> Описание </span></td>
                     <td><span th:text="${lecture.presentation}"> Презентация </span></td>
                     <td><iframe class="embed-responsive-item" th:src="${lecture.video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe></td>
-                    <td><span th:text="${lecture.test}"> Тест </span></td>
+                    <td>
+                        <span th:if="${lecture.test != null}">
+                            <ul>
+                              <li><span th:text="${lecture.test.name}">Тест</span></li>
+                              <li><span th:text="${lecture.test.time + ' минути'}">Време</span></li>
+                              <li><span th:text="${lecture.test.questionsNumber + ' въпроса'}">Брой въпроси</span></li>
+                            </ul>
+                        </span>
+                        <span th:if="${lecture.test == null}">Липсва</span>
+                    </td>
                     <td th:if="${#authorization.expression('isAuthenticated()')}">
                         <form th:action="@{/lecture/edit}" th:object="${id}" method="get">
                             <input type="hidden" name="id" th:value="${lecture.id}" />
@@ -53,8 +62,8 @@
         </div>
     </div>
 </div>
-<!--<div class="savemessage">-->
-<!--    <p style="text-align:center" th:text="|${message}|"/></p>-->
-<!--</div>-->
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|"/></p>
+</div>
 </body>
 </html>

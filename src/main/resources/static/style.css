@@ -4,6 +4,7 @@ body {
       background-size: cover;
       background-position: center;
 }
+/*
 .my-custom-scrollbar {
 position: relative;
 height: 75vh;
@@ -12,6 +13,8 @@ overflow: auto;
 .table-wrapper-scroll-y {
 display: block;
 }
+*/
+
 .btn-block {
     width: 110px;
 }
@@ -22,7 +25,7 @@ display: block;
 th {
 
   position: sticky;
-  top: 0;
+  top: 60px;
 }
 div.message {
   display: inline-block;
