@@ -49,7 +49,7 @@ public class CourseController {
     }
 
     @PostMapping("/delete")
-    private String deleteRecipe(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
+    private String deleteCourse(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
         return courseService.deleteCourse(id, redirectAttributes, model);
     }
 }

@@ -80,6 +80,7 @@ public class UserService {
         model.addAttribute("userList", UserProfileDTOList);
         return "/user/list";
     }
+
     public String editUser(Long id, Model model) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
@@ -89,6 +90,7 @@ public class UserService {
         }
         return "redirect:/user/list";
     }
+
     public String updateUser(UserUpdateDTO userUpdateDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors() || !userUpdateDTO.getPassword().equals(userUpdateDTO.getRepeatPassword())) {
             model.addAttribute("roleList", UserRole.values());
@@ -96,15 +98,16 @@ public class UserService {
             return "user/edit";
         }
         User user = userUpdateMapper.toEntity(userUpdateDTO);
-        if (user.getPassword().length() < 4 ) {
+        if (user.getPassword().length() < 4) {
             user.setPassword(userRepository.findById(user.getId()).get().getPassword());
-        }else{
+        } else {
             user.setPassword(passwordEncoder().encode(user.getPassword()));
         }
         user.setEnabled(true);
         userRepository.save(user);
         return "redirect:/user/list";
     }
+
     public String editProfile(MyUserDetails userDetails, Model model) {
         if (userDetails != null) {
             userDetails.getId();
@@ -116,6 +119,7 @@ public class UserService {
         }
         return "redirect:/profile";
     }
+
     public String updateProfile(UserUpdateDTO userUpdateDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors() || !userUpdateDTO.getPassword().equals(userUpdateDTO.getRepeatPassword())) {
             model.addAttribute("passwordMessage", !userUpdateDTO.getPassword().equals(userUpdateDTO.getRepeatPassword()) ? "Паролите не съвпадат!" : "");
@@ -125,8 +129,8 @@ public class UserService {
         userUpdateDTO.setUserRole(userRepository.findById(userUpdateDTO.getId()).get().getUserRole());
         User user = userUpdateMapper.toEntity(userUpdateDTO);
         //user.setUserRole(userRepository.findById(user.getId()).get().getUserRole());
-        if (user.getPassword().length() < 4 ) {
-            model.addAttribute("message",  "Паролaта е твърде кратка!");
+        if (user.getPassword().length() < 4) {
+            model.addAttribute("message", "Паролaта е твърде кратка!");
             return "user/profile-edit";
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
@@ -136,14 +140,9 @@ public class UserService {
     }
 
     public String deleteUser(Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (id != null) {
-            try {
-                userRepository.deleteById(id);
-            } catch (Exception SQLIntegrityConstraintViolationException) {
-            }
-//        if (entityValidator.checkSafeDeleteUser(id)) {
-//            userRepository.deleteById(id);
-      }
+        if (entityValidator.checkSafeDeleteUser(id)) {
+            userRepository.deleteById(id);
+        }
         redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(userRepository.existsById(id)));
         return "redirect:/course/list";
     }

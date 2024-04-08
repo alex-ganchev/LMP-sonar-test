@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:replace="~{fragment/header.html}">
+    <title>Добавяне на въпрос</title>
+</head>
+<body>
+<h2 class="text-center p-4 text-white">ДОБАВИ ВЪПРОС</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 col-auto">
+            <form action="" th:action="@{/question/add}" th:object="${questionRegistrationDTO}" method="post">
+                <div class="form-group">
+                    <label class="text-white" for="lecture">Лекция*</label>
+                    <select class="form-select" id="lecture" th:field="*{lecture.id}">
+                        <option th:each="lecture : ${lectureList}" th:text="${lecture.name}" th:value="${lecture.id}">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="question">Въпрос</label>
+                    <input type="text" class="form-control" id="question" th:field="*{question}" placeholder="Въпрос">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="answerType">Верни отговори*</label>
+                    <select class="form-select" id="answerType" th:field="*{answerType}">
+                        <option th:each="answerType : ${answerTypeList}" th:text="${answerType.getLabel}" th:value="${answerType.name}">
+                    </select>
+                </div>
+                <div th:each="answer, itemStat : *{answerSet}">
+                    <div class="form-group">
+                        <label class="text-white" for="answer">Отговор</label>
+                        <input type="text" class="form-control" id="answer" th:field="*{answerSet[__${itemStat.index}__].answer}" placeholder="Отговор">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-check-label text-white">
+                            <input type="checkbox" class="form-check-input" th:field="*{answerSet[__${itemStat.index}__].correct}"> Верен отговор
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="points">Точки</label>
+                    <input type="number" class="form-control" id="points" th:field="*{points}" placeholder="Точки">
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-success btn-form" type="submit">Запиши</button>
+                    </div>
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../'">Отказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|"/></p>
+</div>
+</body>
+</html>

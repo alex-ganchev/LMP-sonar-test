@@ -1,5 +1,6 @@
 package digital.razgrad.LMP.controller;
 
+import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.entity.Lecture;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.LectureRepository;
@@ -35,13 +36,27 @@ public class LectureController {
     }
 
     @PostMapping("/add")
-    private String saveLecture(@Valid @ModelAttribute Lecture lecture, BindingResult bindingResult, Model model) {
-        return lectureService.saveLecture(lecture, bindingResult, model);
+    private String saveLecture(@Valid @ModelAttribute Lecture lecture, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        return lectureService.saveLecture(lecture, bindingResult, redirectAttributes, model);
     }
 
     @GetMapping("/list")
     private String listLecture(Model model) {
         model.addAttribute("lectureList", lectureRepository.findAll());
         return ("/lecture/list");
+    }
+    @GetMapping("/edit")
+    private String editLecture(@RequestParam Long id, Model model) {
+        return lectureService.editLecture(id, model);
+    }
+
+    @PostMapping("/edit")
+    private String updateLecture(@Valid @ModelAttribute Lecture lecture, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        return lectureService.updateLecture(lecture, bindingResult, redirectAttributes, model);
+    }
+
+    @PostMapping("/delete")
+    private String deleteLecture(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
+        return lectureService.deleteLecture(id, redirectAttributes, model);
     }
 }

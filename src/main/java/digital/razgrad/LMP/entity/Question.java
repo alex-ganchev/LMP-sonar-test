@@ -13,8 +13,8 @@ public class Question {
     private Long id;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Set<Answer> answerSet;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "lecture_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "lecture_id")
     private Lecture lecture;
     @Enumerated(EnumType.STRING)
     private AnswerType answerType;

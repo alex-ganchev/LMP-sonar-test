@@ -26,7 +26,8 @@ public class Module {
     @ManyToMany(mappedBy = "moduleSet")
     @OrderBy("id")
     private Set<Student> studentSet;
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "module")
     @OrderBy("id")
     private Set<Lecture> lectureSet;
 

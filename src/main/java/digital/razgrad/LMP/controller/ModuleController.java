@@ -1,5 +1,6 @@
 package digital.razgrad.LMP.controller;
 
+import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.entity.Module;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.ModuleRepository;
@@ -9,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -41,5 +39,19 @@ public class ModuleController {
     private String listAllModules(Model model) {
         model.addAttribute("moduleList", moduleRepository.findAll());
         return "/module/list";
+    }
+    @GetMapping("/edit")
+    private String editModule(@RequestParam Long id, Model model) {
+        return moduleService.editModule(id, model);
+    }
+
+    @PostMapping("/edit")
+    private String updateModule(@Valid @ModelAttribute Module module, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        return moduleService.updateModule(module, bindingResult, redirectAttributes, model);
+    }
+
+    @PostMapping("/delete")
+    private String deleteModule(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
+        return moduleService.deleteModule(id, redirectAttributes, model);
     }
 }

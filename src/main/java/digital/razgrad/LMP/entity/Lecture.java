@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "lectures")
@@ -31,6 +32,8 @@ public class Lecture {
     @NotNull
     @JoinColumn(name = "module_id")
     private Module module;
+    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
+    private Set<Question> questionSet;
 
     public Long getId() {
         return id;
@@ -94,5 +97,13 @@ public class Lecture {
 
     public void setModule(Module module) {
         this.module = module;
+    }
+
+    public Set<Question> getQuestionSet() {
+        return questionSet;
+    }
+
+    public void setQuestionSet(Set<Question> questionSet) {
+        this.questionSet = questionSet;
     }
 }
