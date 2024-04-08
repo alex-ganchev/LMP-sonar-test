@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <link th:replace="~{fragment/header.html}">
-    <title>Добавяне на въпрос</title>
+    <title>Редактиране на въпрос</title>
 </head>
 <body>
-<h2 class="text-center p-4 text-white">ДОБАВИ ВЪПРОС</h2>
+<h2 class="text-center p-4 text-white">РЕДАКТИРАЙ ВЪПРОС</h2>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4 col-auto">
-            <form action="" th:action="@{/question/add}" th:object="${questionRegistrationDTO}" method="post">
+            <form action="" th:action="@{/question/edit}" th:object="${question}" method="post">
+                <input type="hidden" name="id" th:value="${question.id}"/>
                 <div class="form-group">
                     <label class="text-white" for="lecture">Лекция*</label>
                     <select class="form-select" id="lecture" th:field="*{lecture.id}">
@@ -49,7 +50,7 @@
                         <button class="btn btn-success btn-form" type="submit">Запиши</button>
                     </div>
                     <div class="col-auto mt-4">
-                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../'">Отказ</button>
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../question/list'">Отказ</button>
                     </div>
                 </div>
             </form>

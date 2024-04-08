@@ -1,6 +1,8 @@
 package digital.razgrad.LMP.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -12,11 +14,17 @@ public class Test {
     private Long id;
     @ManyToMany(mappedBy = "testSet")
     private Set<Student> studentSet;
-    @OneToOne(mappedBy = "test")
+    //@OneToOne(mappedBy = "test")
+    @OneToOne
     private Lecture lecture;
+    @Size(min = 1, message = "Минимален брой символи 1!")
+    @Size(max = 40, message = "Максимален брой символи 40!")
+    private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Min(value = 1, message = "Въведете минути!")
     private int time;
+    @Min(value = 1, message = "Въведете брой въпроси!")
     private int questionsNumber;
 
     public Long getId() {
@@ -41,6 +49,14 @@ public class Test {
 
     public void setLecture(Lecture lecture) {
         this.lecture = lecture;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

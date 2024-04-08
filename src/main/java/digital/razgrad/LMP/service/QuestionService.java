@@ -1,26 +1,26 @@
 package digital.razgrad.LMP.service;
 
 import digital.razgrad.LMP.constant.AnswerType;
-import digital.razgrad.LMP.constant.CourseType;
 import digital.razgrad.LMP.dto.QuestionRegistrationDTO;
 import digital.razgrad.LMP.entity.Answer;
 import digital.razgrad.LMP.entity.Question;
+import digital.razgrad.LMP.entity.Test;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.mapper.QuestionRegistrationMapper;
 import digital.razgrad.LMP.repository.AnswerRepository;
 import digital.razgrad.LMP.repository.LectureRepository;
 import digital.razgrad.LMP.repository.QuestionRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionService {
@@ -54,13 +54,46 @@ public class QuestionService {
         if (bindingResult.hasErrors() || !isValidQuestionForm) {
             model.addAttribute("answerTypeList", AnswerType.values());
             model.addAttribute("lectureList", lectureRepository.findAll());
-            model.addAttribute("message", isValidQuestionForm ? "" : "Има несъответствие в типа на въпроса и посечените орговори!");
+            model.addAttribute("message", isValidQuestionForm ? "" : "Има несъответствие в типа на въпроса и посечените отговори!");
             return "/question/add";
         }
         Question question = questionRegistrationMapper.toEntityQuestion(questionRegistrationDTO);
         List<Answer> answerList = questionRegistrationDTO.getAnswerList();
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(saveQuestionWithAnswers(question, answerList)));
         return "redirect:/question/add";
+    }
+    public String editQuestion(Long id, Model model) {
+        Optional<Question> optionalQuestion = questionRepository.findById(id);
+        if (optionalQuestion.isPresent()) {
+            model.addAttribute("question", optionalQuestion.get());
+            model.addAttribute("answerTypeList", AnswerType.values());
+            model.addAttribute("lectureList", lectureRepository.findAll());
+            return "/question/edit";
+        }
+        return "redirect:/question/list";
+    }
+
+//    public String updateQuestion(QuestionRegistrationDTO questionRegistrationDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        boolean isEnoughQuestionsAvailable = validateQuestionForm(questionRegistrationDTO);
+//        if (bindingResult.hasErrors() || !isEnoughQuestionsAvailable) {
+//            model.addAttribute("lectureList", lectureRepository.findAll());
+//            model.addAttribute("message", isEnoughQuestionsAvailable ? "" : "Зададеният брои въпроси е повече от наличните за тази лекция!");
+//            return "/question/edit";
+//        }
+//        redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(testRepository.save(test)));
+//        return "redirect:/question/list";
+//    }
+
+    public String deleteQuestion(Long id, RedirectAttributes redirectAttributes, Model model) {
+        if (id != null) {
+            try {
+                questionRepository.deleteById(id);
+            } catch (Exception SQLIntegrityConstraintViolationException) {
+                System.out.println("Error: Не можете да изтриете въпроса!");
+            }
+            redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(questionRepository.existsById(id)));
+        }
+        return "redirect:/question/list";
     }
 
     private boolean validateQuestionForm(QuestionRegistrationDTO questionRegistrationDTO) {

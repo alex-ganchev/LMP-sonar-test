@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:replace="~{fragment/header.html}">
+    <title>Добавяне на тест</title>
+</head>
+<body>
+<h2 class="text-center p-4 text-white">ДОБАВИ ТЕСТ</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 col-auto">
+            <form action="" th:action="@{/test/add}" th:object="${test}" method="post">
+                <div class="form-group">
+                    <label class="text-white" for="lecture">Лекция*</label>
+                    <select class="form-select" id="lecture" th:field="*{lecture}">
+                        <option th:each="lecture : ${lectureList}" th:text="${lecture.name}" th:value="${lecture.id}">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="name">Име*</label>
+                    <div class="message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Име на теста">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="description">Описание</label>
+                    <input type="text" class="form-control" id="description" th:field="*{description}" placeholder="Описание на теста">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="time">Продължителност</label>
+                    <div class="message" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></div>
+                    <input type="number" class="form-control" id="time" th:field="*{time}" placeholder="Време за теста">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="time">Брой въпроси</label>
+                    <div class="message" th:if="${#fields.hasErrors('questionsNumber')}" th:errors="*{questionsNumber}"></div>
+                    <input type="number" class="form-control" id="questionsNumber" th:field="*{questionsNumber}" placeholder="Брой въпроси">
+                </div>
+
+                <div class="row justify-content-center ">
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-success btn-form" type="submit">Запиши</button>
+                    </div>
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../'">Отказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|"/></p>
+</div>
+</body>
+</html>
