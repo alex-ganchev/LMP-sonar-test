@@ -3,17 +3,23 @@ package digital.razgrad.LMP.dto;
 import digital.razgrad.LMP.constant.AnswerType;
 import digital.razgrad.LMP.entity.Answer;
 import digital.razgrad.LMP.entity.Lecture;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 
 import java.util.List;
 import java.util.Set;
 
 public class QuestionRegistrationDTO {
+    @NotNull
     private Lecture lecture;
+    @Size(min = 5, message = "Минимален брой символи 5!")
     private String question;
     private AnswerType answerType;
-    private List<Answer> answerSet;
+    private List<Answer> answerList;
     private boolean isCorrect;
+    @Min(value = 1, message = "Въведете брой точки!")
     private int points;
 
     public Lecture getLecture() {
@@ -40,12 +46,12 @@ public class QuestionRegistrationDTO {
         this.answerType = answerType;
     }
 
-    public List<Answer> getAnswerSet() {
-        return answerSet;
+    public List<Answer> getAnswerList() {
+        return answerList;
     }
 
-    public void setAnswerSet(List<Answer> answerSet) {
-        this.answerSet = answerSet;
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
     }
 
     public boolean isCorrect() {

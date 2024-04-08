@@ -32,7 +32,8 @@ public class Lecture {
     @NotNull
     @JoinColumn(name = "module_id")
     private Module module;
-    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
+   // @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lecture")
     private Set<Question> questionSet;
 
     public Long getId() {
