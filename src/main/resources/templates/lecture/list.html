@@ -40,7 +40,13 @@
                               <li><span th:text="${lecture.test.name}">Тест</span></li>
                               <li><span th:text="${lecture.test.time + ' минути'}">Време</span></li>
                               <li><span th:text="${lecture.test.questionsNumber + ' въпроса'}">Брой въпроси</span></li>
+                              <li><span th:text="${lecture.test.minPassingPercentage + ' % минимум'}">Минимален процент</span></li>
+                                <li><span th:text="${lecture.test.mandatory ? 'Задължителен' : 'Пожелание'}">Задължителен ли е</span></li>
                             </ul>
+                             <form th:action="@{/test/start}" th:object="${id}" method="get">
+                            <input type="hidden" name="id" th:value="${lecture.test.id}" />
+                            <input class="btn btn-success btn-block" type="submit" value="Реши"/>
+                        </form>
                         </span>
                         <span th:if="${lecture.test == null}">Липсва</span>
                     </td>

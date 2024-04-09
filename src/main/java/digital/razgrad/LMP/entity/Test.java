@@ -101,4 +101,20 @@ public class Test {
     public void setTestResultList(List<TestResult> testResultList) {
         this.testResultList = testResultList;
     }
+
+    public boolean isMandatory() {
+        return isMandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        isMandatory = mandatory;
+    }
+
+    public int getMinPassingPercentage() {
+        return minPassingPercentage;
+    }
+
+    public void setMinPassingPercentage(int minPassingPercentage) {
+        this.minPassingPercentage = minPassingPercentage;
+    }
 }
