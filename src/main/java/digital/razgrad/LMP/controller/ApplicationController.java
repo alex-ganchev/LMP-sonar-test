@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/application")
@@ -45,9 +46,9 @@ public class ApplicationController {
                 Application application = new Application((Student) optionalUser.get(), optionalCourse.get());
                 try {
                     applicationRepository.save(application);
-                    redirectAttributes.addFlashAttribute("message", "Кандидатсвахте успешно!");
+                    redirectAttributes.addFlashAttribute("message", "Кандидатствахте успешно!");
                 } catch (Exception SQLIntegrityConstraintViolationException) {
-                    redirectAttributes.addFlashAttribute("message", "Вече сте кандитаствали за този курс!");
+                    redirectAttributes.addFlashAttribute("message", "Вече сте кандитатствали за този курс!");
                 }
             }
         }
@@ -72,9 +73,19 @@ public class ApplicationController {
         Optional<Application> optionalApplication = applicationRepository.findById(id);
         if (optionalApplication.isPresent()) {
             Application application = optionalApplication.get();
-            application.setApproved(true);
-            applicationRepository.save(application);
-            redirectAttributes.addFlashAttribute("message", "Успешно одобрихте кандидатурата!");
+            Optional<Course> optionalCourse = courseRepository.findById(application.getCourse().getId());
+            if(optionalCourse.isPresent()){
+                Optional<User> optionalUser = userRepository.findById(application.getStudent().getId());
+                if(optionalUser.isPresent()){
+                    Course course = optionalCourse.get();
+                    course.getStudentSet().add((Student)optionalUser.get());
+                    application.setApproved(true);
+                    applicationRepository.save(application);
+                    courseRepository.save(course);
+                    redirectAttributes.addFlashAttribute("message", "Успешно одобрихте кандидатурата!");
+                }
+
+            }
         }
         return "redirect:/application/list";
     }
