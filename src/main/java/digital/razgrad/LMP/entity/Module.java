@@ -24,7 +24,6 @@ public class Module {
     @JoinColumn(name = "course_id")
     private Course course;
     @ManyToMany(mappedBy = "moduleSet")
-    @OrderBy("id")
     private Set<Student> studentSet;
     //@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "module")

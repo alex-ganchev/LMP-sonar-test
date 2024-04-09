@@ -2,9 +2,12 @@ package digital.razgrad.LMP.service;
 
 import digital.razgrad.LMP.constant.CourseStatus;
 import digital.razgrad.LMP.constant.CourseType;
+import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Course;
+import digital.razgrad.LMP.entity.Teacher;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.repository.CourseRepository;
+import digital.razgrad.LMP.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -21,10 +24,19 @@ public class CourseService {
     private CourseRepository courseRepository;
     @Autowired
     private EntityValidator entityValidator;
+    @Autowired
+    private UserRepository userRepository;
+    public String addCourse(Model model) {
+        model.addAttribute("typeList", CourseType.values());
+        model.addAttribute("course", new Course());
+        model.addAttribute("teacherList", userRepository.getUserByUserRole(UserRole.ROLE_TEACHER));
+        return "/course/add";
+    }
 
     public String saveCourse(Course course, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("typeList", CourseType.values());
+            model.addAttribute("teacherList", userRepository.getUserByUserRole(UserRole.ROLE_TEACHER));
             return "/course/add";
         }
         course.setStatus(CourseStatus.UPCOMING);
@@ -38,6 +50,7 @@ public class CourseService {
             model.addAttribute("course", optionalCourse.get());
             model.addAttribute("typeList", CourseType.values());
             model.addAttribute("statusList", CourseStatus.values());
+            model.addAttribute("teacherList", userRepository.getUserByUserRole(UserRole.ROLE_TEACHER));
             return "/course/edit";
         }
         return "redirect:/course/list";
@@ -46,8 +59,10 @@ public class CourseService {
         if (bindingResult.hasErrors()) {
             model.addAttribute("typeList", CourseType.values());
             model.addAttribute("statusList", CourseStatus.values());
+            model.addAttribute("teacherList", userRepository.getUserByUserRole(UserRole.ROLE_TEACHER));
             return "/course/edit";
         }
+
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(courseRepository.save(course)));
         return "redirect:/course/list";
     }

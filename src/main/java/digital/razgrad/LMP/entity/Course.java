@@ -39,7 +39,6 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private Set<Application> applicationSet;
     @ManyToMany(mappedBy = "courseSet")
-    @OrderBy("id")
     private Set<Student> studentSet;
 
     public Long getId() {

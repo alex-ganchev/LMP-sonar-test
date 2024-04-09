@@ -1,6 +1,7 @@
 package digital.razgrad.LMP.controller;
 
 import digital.razgrad.LMP.constant.CourseType;
+import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.service.CourseService;
@@ -22,9 +23,7 @@ public class CourseController {
 
     @GetMapping("/add")
     private String addCourse(Model model) {
-        model.addAttribute("typeList", CourseType.values());
-        model.addAttribute("course", new Course());
-        return "/course/add";
+       return courseService.addCourse(model);
     }
 
     @PostMapping("/add")

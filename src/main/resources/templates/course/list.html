@@ -40,7 +40,7 @@
                 <td><span th:text="${course.startDate}"> Начална дата </span></td>
                 <td><span th:text="${course.city}"> Град </span></td>
                 <td><ul>
-                    <li th:each="teacher : ${course.teacherSet}" th:text="${teacher.firstName}"></li>
+                    <li th:each="teacher : ${course.teacherSet}" th:text="${teacher.firstName + ' ' + teacher.lastName}"></li>
                 </ul>
                 <td th:if="${#authorization.expression('isAuthenticated()')}">
                     <form th:action="@{/application}" th:object="${id}" method="post">
