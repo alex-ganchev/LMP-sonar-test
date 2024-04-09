@@ -39,7 +39,7 @@
                     <td><span th:text="${candidate.course.startDate}"> Начална дата </span></td>
                     <td><span th:text="${candidate.course.city}"> Град </span></td>
                     <td><ul>
-                        <li th:each="teacher : ${candidate.course.teacherSet}" th:text="${teacher.firstName}"></li>
+                        <li th:each="teacher : ${candidate.course.teachers}" th:text="${teacher.firstName}"></li>
                         </ul>
                     </td>
                     <td><span th:text="${candidate.student.firstName}"> Име </span></td>

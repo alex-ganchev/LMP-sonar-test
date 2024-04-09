@@ -11,46 +11,44 @@ import java.util.Set;
 public class Student extends User {
 
     @ManyToMany
-    @JoinTable(
-            name = "students_tests",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "test_id"))
-    private Set<Test> testSet;
+//    @JoinTable(
+//            name = "students_tests",
+//            joinColumns = @JoinColumn(name = "student_id"),
+//            inverseJoinColumns = @JoinColumn(name = "test_id"))
+    private Set<Test> tests;
     @ManyToMany
-    @JoinTable(
-            name = "students_modules",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "module_id"))
-    private Set<Module> moduleSet;
+//    @JoinTable(
+//            name = "students_modules",
+//            joinColumns = @JoinColumn(name = "student_id"),
+//            inverseJoinColumns = @JoinColumn(name = "module_id"))
+    private Set<Module> modules;
     @OneToMany(mappedBy = "student")
     private List<TestStudentAnswer> testStudentAnswerList;
     @OneToMany(mappedBy = "student")
     private List<Application> applicationList;
     @ManyToMany
-    @JoinTable(
-            name = "students_courses",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Course> courseSet;
+//    @JoinTable(
+//            name = "students_courses",
+//            joinColumns = @JoinColumn(name = "student_id"),
+//            inverseJoinColumns = @JoinColumn(name = "course_id"))
+//      5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,
+//      защо не иска да тръгне с допълнителното конфигуриране :((((
+    private Set<Course> courses;
 
-    public Student() {
-        setUserRole(UserRole.ROLE_STUDENT);
+    public Set<Test> getTests() {
+        return tests;
     }
 
-    public Set<Test> getTestSet() {
-        return testSet;
+    public void setTests(Set<Test> tests) {
+        this.tests = tests;
     }
 
-    public void setTestSet(Set<Test> testSet) {
-        this.testSet = testSet;
+    public Set<Module> getModules() {
+        return modules;
     }
 
-    public Set<Module> getModuleSet() {
-        return moduleSet;
-    }
-
-    public void setModuleSet(Set<Module> moduleSet) {
-        this.moduleSet = moduleSet;
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
     }
 
     public List<TestStudentAnswer> getTestStudentAnswerList() {
@@ -69,11 +67,11 @@ public class Student extends User {
         this.applicationList = applicationList;
     }
 
-    public Set<Course> getCourseSet() {
-        return courseSet;
+    public Set<Course> getCourses() {
+        return courses;
     }
 
-    public void setCourseSet(Set<Course> courseSet) {
-        this.courseSet = courseSet;
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

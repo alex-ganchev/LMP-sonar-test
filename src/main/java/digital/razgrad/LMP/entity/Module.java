@@ -23,9 +23,9 @@ public class Module {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-    @ManyToMany(mappedBy = "moduleSet")
-    private Set<Student> studentSet;
-    //@OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    //@ManyToMany(mappedBy = "moduleSet")
+    @ManyToMany
+    private Set<Student> students;
     @OneToMany(mappedBy = "module")
     @OrderBy("id")
     private Set<Lecture> lectureSet;
@@ -70,12 +70,12 @@ public class Module {
         this.course = course;
     }
 
-    public Set<Student> getStudentSet() {
-        return studentSet;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
     public Set<Lecture> getLectureSet() {

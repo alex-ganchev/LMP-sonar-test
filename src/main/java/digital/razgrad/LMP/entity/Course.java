@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,12 +23,12 @@ public class Course {
     private String name;
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
-   // @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "course")
     @OrderBy("id")
     private Set<Module> moduleSet;
-    @ManyToMany(mappedBy = "courseSet")
-    private Set<Teacher> teacherSet;
+   // @ManyToMany(mappedBy = "courseSet")
+    @ManyToMany
+    private Set<Teacher> teachers;
     @Enumerated(EnumType.STRING)
     private CourseType type;
     @Enumerated(EnumType.STRING)
@@ -38,8 +39,11 @@ public class Course {
     private LocalDate startDate;
     @OneToMany(mappedBy = "course")
     private Set<Application> applicationSet;
-    @ManyToMany(mappedBy = "courseSet")
-    private Set<Student> studentSet;
+    //@ManyToMany(mappedBy = "courses")
+    // 5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,
+    // защо не иска да тръгне с допълнителното конфигуриране :((((
+    @ManyToMany
+    private Set<Student> students;
 
     public Long getId() {
         return id;
@@ -57,12 +61,20 @@ public class Course {
         this.moduleSet = moduleSet;
     }
 
-    public Set<Teacher> getTeacherSet() {
-        return teacherSet;
+    public Set<Teacher> getTeachers() {
+        return teachers;
     }
 
-    public void setTeacherSet(Set<Teacher> teacherSet) {
-        this.teacherSet = teacherSet;
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
     public CourseType getType() {
@@ -122,10 +134,10 @@ public class Course {
     }
 
     public Set<Student> getStudentSet() {
-        return studentSet;
+        return students;
     }
 
     public void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
+        this.students = studentSet;
     }
 }

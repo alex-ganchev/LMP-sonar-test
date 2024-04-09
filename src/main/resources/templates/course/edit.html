@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="name">Лектори</label>
-                    <div class="message" th:if="${#fields.hasErrors('teacherSet')}" th:errors="*{teacherSet}"></div>
+                    <div class="message" th:if="${#fields.hasErrors('teachers')}" th:errors="*{teacherSet}"></div>
                     <select class="form-select" multiple th:field="*{teacherSet}">
                         <option th:each="teacher : ${teacherList}"
                                 th:text="${teacher.firstName + ' ' + teacher.lastName}"

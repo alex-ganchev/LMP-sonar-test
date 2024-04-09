@@ -23,9 +23,6 @@ public class Lecture {
     private byte[] presentation;
     @Column(nullable = true)
     private String video;
-    //@OneToOne(cascade = CascadeType.ALL)
-    //@OneToOne
-    //@JoinColumn(name = "test_id", referencedColumnName = "id")
     @OneToOne(mappedBy = "lecture")
     private Test test;
     @NotNull(message =  "Въведете дата!")
@@ -34,7 +31,6 @@ public class Lecture {
     @NotNull
     @JoinColumn(name = "module_id")
     private Module module;
-   // @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "lecture")
     private Set<Question> questionSet;
 
