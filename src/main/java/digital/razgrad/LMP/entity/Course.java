@@ -37,7 +37,10 @@ public class Course {
     @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
     @OneToMany(mappedBy = "course")
-    private List<Application> applicationList;
+    private Set<Application> applicationSet;
+    @ManyToMany(mappedBy = "courseSet")
+    @OrderBy("id")
+    private Set<Student> studentSet;
 
     public Long getId() {
         return id;
@@ -111,11 +114,19 @@ public class Course {
         this.name = name;
     }
 
-    public List<Application> getApplicationList() {
-        return applicationList;
+    public Set<Application> getApplicationSet() {
+        return applicationSet;
     }
 
-    public void setApplicationList(List<Application> applicationList) {
-        this.applicationList = applicationList;
+    public void setApplicationSet(Set<Application> applicationSet) {
+        this.applicationSet = applicationSet;
+    }
+
+    public Set<Student> getStudentSet() {
+        return studentSet;
+    }
+
+    public void setStudentSet(Set<Student> studentSet) {
+        this.studentSet = studentSet;
     }
 }

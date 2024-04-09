@@ -9,13 +9,21 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id",nullable = false, unique = true)
     private Student student;
     @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id",nullable = false, unique = true)
     private Course course;
     @Column(columnDefinition = "boolean DEFAULT '0'", nullable = false)
     private boolean isApproved;
+
+    public Application() {
+    }
+
+    public Application(Student student, Course course) {
+        this.student = student;
+        this.course = course;
+    }
 
     public Long getId() {
         return id;

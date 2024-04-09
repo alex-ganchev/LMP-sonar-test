@@ -26,6 +26,12 @@ public class Student extends User {
     private List<TestStudentAnswer> testStudentAnswerList;
     @OneToMany(mappedBy = "student")
     private List<Application> applicationList;
+    @ManyToMany
+    @JoinTable(
+            name = "students_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Course> courseSet;
 
     public Student() {
         setUserRole(UserRole.ROLE_STUDENT);
@@ -61,5 +67,13 @@ public class Student extends User {
 
     public void setApplicationList(List<Application> applicationList) {
         this.applicationList = applicationList;
+    }
+
+    public Set<Course> getCourseSet() {
+        return courseSet;
+    }
+
+    public void setCourseSet(Set<Course> courseSet) {
+        this.courseSet = courseSet;
     }
 }

@@ -22,6 +22,7 @@
                 <th scope="col">Лектори</th>
                 <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
                 <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
+                <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
             </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -41,6 +42,12 @@
                 <td><ul>
                     <li th:each="teacher : ${course.teacherSet}" th:text="${teacher.firstName}"></li>
                 </ul>
+                <td th:if="${#authorization.expression('isAuthenticated()')}">
+                    <form th:action="@{/application}" th:object="${id}" method="post">
+                        <input type="hidden" name="id" th:value="${course.id}" />
+                        <input class="btn btn-success btn-form" type="submit" value="Кандидатсвай"/>
+                    </form>
+                </td>
                 <td th:if="${#authorization.expression('isAuthenticated()')}">
                     <form th:action="@{/course/edit}" th:object="${id}" method="get">
                         <input type="hidden" name="id" th:value="${course.id}" />
