@@ -3,6 +3,7 @@ package digital.razgrad.LMP.entity;
 import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +22,8 @@ public class Student extends User {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
     private Set<Module> moduleSet;
+    @OneToMany(mappedBy = "student")
+    private List<TestStudentAnswer> testStudentAnswerList;
 
     public Student() {
         setUserRole(UserRole.ROLE_STUDENT);
@@ -40,5 +43,13 @@ public class Student extends User {
 
     public void setModuleSet(Set<Module> moduleSet) {
         this.moduleSet = moduleSet;
+    }
+
+    public List<TestStudentAnswer> getTestStudentAnswerList() {
+        return testStudentAnswerList;
+    }
+
+    public void setTestStudentAnswerList(List<TestStudentAnswer> testStudentAnswerList) {
+        this.testStudentAnswerList = testStudentAnswerList;
     }
 }

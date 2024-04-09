@@ -27,6 +27,8 @@ public class Question {
     private String question;
 
     private int points;
+    @OneToMany(mappedBy = "question")
+    private List<TestStudentAnswer> testStudentAnswerList;
 
     public Long getId() {
         return id;
@@ -74,5 +76,13 @@ public class Question {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public List<TestStudentAnswer> getTestStudentAnswerList() {
+        return testStudentAnswerList;
+    }
+
+    public void setTestStudentAnswerList(List<TestStudentAnswer> testStudentAnswerList) {
+        this.testStudentAnswerList = testStudentAnswerList;
     }
 }
