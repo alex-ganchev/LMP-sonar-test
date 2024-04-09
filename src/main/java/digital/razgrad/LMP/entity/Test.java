@@ -1,9 +1,11 @@
 package digital.razgrad.LMP.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +28,15 @@ public class Test {
     private int time;
     @Min(value = 1, message = "Въведете брой въпроси!")
     private int questionsNumber;
+    @OneToMany(mappedBy = "test")
+    private List<TestResult> testResultList;
+    @Column(columnDefinition = "boolean DEFAULT '0'", nullable = false)
+    private boolean isMandatory;
+    @Min(value = 1, message = "Минималният процент е 1!")
+    @Max(value = 100, message = "Максималният процент е 100!")
+    @Column(name = "min_passing_percentage", nullable = false)
+    private int minPassingPercentage;
+
 
     public Long getId() {
         return id;
@@ -81,5 +92,29 @@ public class Test {
 
     public void setQuestionsNumber(int questionsNumber) {
         this.questionsNumber = questionsNumber;
+    }
+
+    public List<TestResult> getTestResultList() {
+        return testResultList;
+    }
+
+    public void setTestResultList(List<TestResult> testResultList) {
+        this.testResultList = testResultList;
+    }
+
+    public boolean isMandatory() {
+        return isMandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        isMandatory = mandatory;
+    }
+
+    public int getMinPassingPercentage() {
+        return minPassingPercentage;
+    }
+
+    public void setMinPassingPercentage(int minPassingPercentage) {
+        this.minPassingPercentage = minPassingPercentage;
     }
 }

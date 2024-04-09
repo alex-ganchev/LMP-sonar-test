@@ -3,6 +3,7 @@ package digital.razgrad.LMP.entity;
 import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +22,16 @@ public class Student extends User {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
     private Set<Module> moduleSet;
+    @OneToMany(mappedBy = "student")
+    private List<TestStudentAnswer> testStudentAnswerList;
+    @OneToMany(mappedBy = "student")
+    private List<Application> applicationList;
+    @ManyToMany
+    @JoinTable(
+            name = "students_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Course> courseSet;
 
     public Student() {
         setUserRole(UserRole.ROLE_STUDENT);
@@ -40,5 +51,29 @@ public class Student extends User {
 
     public void setModuleSet(Set<Module> moduleSet) {
         this.moduleSet = moduleSet;
+    }
+
+    public List<TestStudentAnswer> getTestStudentAnswerList() {
+        return testStudentAnswerList;
+    }
+
+    public void setTestStudentAnswerList(List<TestStudentAnswer> testStudentAnswerList) {
+        this.testStudentAnswerList = testStudentAnswerList;
+    }
+
+    public List<Application> getApplicationList() {
+        return applicationList;
+    }
+
+    public void setApplicationList(List<Application> applicationList) {
+        this.applicationList = applicationList;
+    }
+
+    public Set<Course> getCourseSet() {
+        return courseSet;
+    }
+
+    public void setCourseSet(Set<Course> courseSet) {
+        this.courseSet = courseSet;
     }
 }

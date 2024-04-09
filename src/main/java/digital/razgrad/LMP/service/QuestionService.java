@@ -73,14 +73,15 @@ public class QuestionService {
         return "redirect:/question/list";
     }
 
-//    public String updateQuestion(QuestionRegistrationDTO questionRegistrationDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-//        boolean isEnoughQuestionsAvailable = validateQuestionForm(questionRegistrationDTO);
+//    public String updateQuestion(Question question, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//       // boolean isEnoughQuestionsAvailable = validateQuestionForm(questionRegistrationDTO);
+//
 //        if (bindingResult.hasErrors() || !isEnoughQuestionsAvailable) {
 //            model.addAttribute("lectureList", lectureRepository.findAll());
 //            model.addAttribute("message", isEnoughQuestionsAvailable ? "" : "Зададеният брои въпроси е повече от наличните за тази лекция!");
 //            return "/question/edit";
 //        }
-//        redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(testRepository.save(test)));
+//        redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(questionRepository.save(question)));
 //        return "redirect:/question/list";
 //    }
 

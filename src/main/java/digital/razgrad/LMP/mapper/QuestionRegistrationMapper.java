@@ -16,7 +16,8 @@ import java.util.Set;
 public class QuestionRegistrationMapper {
     @Autowired
     LectureRepository lectureRepository;
-    public Question toEntityQuestion(QuestionRegistrationDTO questionRegistrationDTO){
+
+    public Question toEntityQuestion(QuestionRegistrationDTO questionRegistrationDTO) {
         Question question = new Question();
         question.setLecture(lectureRepository.findById(questionRegistrationDTO.getLecture().getId()).get());
         question.setQuestion(questionRegistrationDTO.getQuestion());
@@ -24,6 +25,17 @@ public class QuestionRegistrationMapper {
         question.setPoints(questionRegistrationDTO.getPoints());
         //question.setAnswerSet(new HashSet<>(questionRegistrationDTO.getAnswerSet()));
         return question;
+    }
+
+    public QuestionRegistrationDTO toQuestionRegistrationDTO (Question question) {
+        QuestionRegistrationDTO questionRegistrationDTO = new QuestionRegistrationDTO();
+        questionRegistrationDTO.setLecture(question.getLecture());
+        questionRegistrationDTO.setAnswerList(question.getAnswerList());
+        questionRegistrationDTO.setPoints(question.getPoints());
+        questionRegistrationDTO.setQuestion(question.getQuestion());
+        questionRegistrationDTO.setAnswerType(question.getAnswerType());
+
+        return questionRegistrationDTO;
     }
 
 }

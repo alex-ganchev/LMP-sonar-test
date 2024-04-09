@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,6 +36,11 @@ public class Course {
     private String city;
     @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
+    @OneToMany(mappedBy = "course")
+    private Set<Application> applicationSet;
+    @ManyToMany(mappedBy = "courseSet")
+    @OrderBy("id")
+    private Set<Student> studentSet;
 
     public Long getId() {
         return id;
@@ -106,5 +112,21 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Application> getApplicationSet() {
+        return applicationSet;
+    }
+
+    public void setApplicationSet(Set<Application> applicationSet) {
+        this.applicationSet = applicationSet;
+    }
+
+    public Set<Student> getStudentSet() {
+        return studentSet;
+    }
+
+    public void setStudentSet(Set<Student> studentSet) {
+        this.studentSet = studentSet;
     }
 }
