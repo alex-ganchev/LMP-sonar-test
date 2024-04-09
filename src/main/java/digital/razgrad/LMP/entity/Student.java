@@ -24,6 +24,8 @@ public class Student extends User {
     private Set<Module> moduleSet;
     @OneToMany(mappedBy = "student")
     private List<TestStudentAnswer> testStudentAnswerList;
+    @OneToMany(mappedBy = "student")
+    private List<Application> applicationList;
 
     public Student() {
         setUserRole(UserRole.ROLE_STUDENT);
@@ -51,5 +53,13 @@ public class Student extends User {
 
     public void setTestStudentAnswerList(List<TestStudentAnswer> testStudentAnswerList) {
         this.testStudentAnswerList = testStudentAnswerList;
+    }
+
+    public List<Application> getApplicationList() {
+        return applicationList;
+    }
+
+    public void setApplicationList(List<Application> applicationList) {
+        this.applicationList = applicationList;
     }
 }

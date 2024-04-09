@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,6 +36,8 @@ public class Course {
     private String city;
     @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
+    @OneToMany(mappedBy = "course")
+    private List<Application> applicationList;
 
     public Long getId() {
         return id;
@@ -106,5 +109,13 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Application> getApplicationList() {
+        return applicationList;
+    }
+
+    public void setApplicationList(List<Application> applicationList) {
+        this.applicationList = applicationList;
     }
 }

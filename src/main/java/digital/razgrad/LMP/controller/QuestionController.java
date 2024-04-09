@@ -42,8 +42,8 @@ public class QuestionController {
     }
 
 //    @PostMapping("/edit")
-//    private String updateQuestion(@Valid @ModelAttribute QuestionRegistrationDTO questionRegistrationDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-//        return questionService.updateQuestion(questionRegistrationDTO, bindingResult, redirectAttributes, model);
+//    private String updateQuestion(@Valid @ModelAttribute Question question, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        return questionService.updateQuestion(question, bindingResult, redirectAttributes, model);
 //    }
     @PostMapping("/delete")
     private String deleteQuestion(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
