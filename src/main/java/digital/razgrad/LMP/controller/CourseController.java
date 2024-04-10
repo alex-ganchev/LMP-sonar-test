@@ -1,7 +1,5 @@
 package digital.razgrad.LMP.controller;
 
-import digital.razgrad.LMP.constant.CourseType;
-import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.service.CourseService;

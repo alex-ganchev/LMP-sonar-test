@@ -18,9 +18,10 @@ public class Lecture {
     private String name;
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
-    @Lob
-    @Column(nullable = true, columnDefinition="MEDIUMBLOB")
-    private byte[] presentation;
+//    @Lob
+//    @Column(nullable = true, columnDefinition="MEDIUMBLOB")
+//    private byte[] presentation;
+    private String presentation;
     @Column(nullable = true)
     private String video;
     @OneToOne(mappedBy = "lecture")
@@ -58,11 +59,11 @@ public class Lecture {
         this.description = description;
     }
 
-    public byte[] getPresentation() {
+    public String getPresentation() {
         return presentation;
     }
 
-    public void setPresentation(byte[] presentation) {
+    public void setPresentation(String presentation) {
         this.presentation = presentation;
     }
 

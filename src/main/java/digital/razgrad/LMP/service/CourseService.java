@@ -41,7 +41,7 @@ public class CourseService {
         }
         course.setStatus(CourseStatus.UPCOMING);
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(courseRepository.save(course)));
-        return "redirect:/course/add";
+        return "redirect:/course/list";
     }
 
     public String editCourse(@RequestParam Long id, Model model) {

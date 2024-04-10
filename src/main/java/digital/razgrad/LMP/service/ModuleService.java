@@ -38,8 +38,10 @@ public class ModuleService {
     public String editModule(@RequestParam Long id, Model model) {
         Optional<Module> optionalModule = moduleRepository.findById(id);
         if (optionalModule.isPresent()) {
+           // model.addAttribute("courseList", courseRepository.findAll());
             model.addAttribute("courseList", courseRepository.findAll());
             model.addAttribute("module", optionalModule.get());
+            model.addAttribute("studentList", optionalModule.get().getCourse().getStudents());
             return "/module/edit";
         }
         return "redirect:/module/list";
@@ -47,7 +49,8 @@ public class ModuleService {
 
     public String updateModule(Module module, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("courseList", courseRepository.findAll());
+           // model.addAttribute("courseList", courseRepository.findAll());
+            model.addAttribute("studentList", module.getCourse().getStudents());
             model.addAttribute("module", module);
             return "/module/edit";
         }
