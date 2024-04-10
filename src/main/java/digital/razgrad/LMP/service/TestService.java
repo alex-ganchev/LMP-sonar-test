@@ -68,8 +68,9 @@ public class TestService {
     public String startTest(Long id, Model model) {
         Optional<Test> optionalTest = testRepository.findById(id);
         if (optionalTest.isPresent()) {
+           model.addAttribute("test", optionalTest.get());
            model.addAttribute("questionList", generateTest(optionalTest.get()));
-           model.addAttribute("test", new TestResult());
+           model.addAttribute("testResult", new TestResult());
         }
         return "/test/start";
 

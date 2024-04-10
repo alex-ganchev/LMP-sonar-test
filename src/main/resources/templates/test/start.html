@@ -5,10 +5,21 @@
     <title>Решаване на тест</title>
 </head>
 <body>
-<h2 class="text-center p-4 text-white ">РЕШАВАНЕ НА ТЕСТ</h2>
+<div class="text-center">
+    <h2 style="padding: 10px 0;" class="text-white">РЕШАВАНЕ НА ТЕСТ</h2>
+    <h4 class="text-white" th:text="${test.name}">Име</h4>
+</div>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4 col-auto">
+            <div >
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Описание : ' + test.description}">Описание</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Брой въпроси в теста : ' + test.questionsNumber + ' въпроса'}">Брой въпроси</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Продължителност в минути : ' + test.time + ' минути'}">Продължителност</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Минимален процент верни отговори : ' + test.minPassingPercentage + ' %'}">Минимален процент</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${test.mandatory ? 'Теста е задължителен' : 'Теста е пожелание'}"></p>
+            </div>
+            <p></p>
             <form action="" th:action="@{/test/finish}" th:object="${testResult}" method="post">
                 <div th:each="question, itemStat : ${questionList}">
                     <div class="form-group">
@@ -24,7 +35,7 @@
                                 <br/>
                             </div>
                         </div>
-                        <div th:if="${question.answerType.getLabel} == 'Няколко врени'">
+                        <div th:if="${question.answerType.getLabel} == 'Няколко верни'">
                             <div th:each="answer : ${question.answerList}">
                                 <input class="form-check-input" type="checkbox" th:id="'answer_' + ${answer.id}" th:name="'question_' + ${question.id}" th:value="${answer}" />
                                 <label class="text-white form-check-label" th:for="'answer_' + ${answer.id}" th:text="${answer.answer}"></label>
@@ -32,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <p></p>>
+                    <p></p>
                 </div>
                 <div class="row justify-content-center ">
                     <div class="col-auto mt-4">
