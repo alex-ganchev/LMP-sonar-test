@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link th:replace="~{fragment/header.html}">
+    <title>Решаване на тест</title>
+</head>
+<body>
+<div class="text-center">
+    <h2 style="padding: 10px 0;" class="text-white">РЕШАВАНЕ НА ТЕСТ</h2>
+    <h4 class="text-white" th:text="${test.name}">Име</h4>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 col-auto">
+            <div >
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Описание : ' + test.description}">Описание</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Брой въпроси в теста : ' + test.questionsNumber + ' въпроса'}">Брой въпроси</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Продължителност в минути : ' + test.time + ' минути'}">Продължителност</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${'Минимален процент верни отговори : ' + test.minPassingPercentage + ' %'}">Минимален процент</p>
+                <p style="margin-bottom: 3px;" class="text-white" th:text="${test.mandatory ? 'Теста е задължителен' : 'Теста е пожелание'}"></p>
+            </div>
+            <p></p>
+            <form action="" th:action="@{/test/finish}" th:object="${testResult}" method="post">
+                <input type="hidden" th:name="test.id" th:value="${test.id}" />
+                <div th:each="question, itemStat : ${questionList}">
+                    <div class="form-group">
+                        <label class="text-white" th:text="${question.question + ' - ' + question.points + ' точки'}">Въпрос</label>
+                        <br/>
+                        <div th:if="${question.answerType.getLabel} == 'Отворен'">
+                            <input type="text" class="form-control" th:id="'answer_' + ${question.id}" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].answer'" />
+                            <input type="hidden" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].question.id'" th:value="${question.id}" />
+                        </div>
+                        <div th:if="${question.answerType.getLabel} == 'Един верен'">
+                            <div th:each="answer : ${question.answerList}">
+                                <input type="radio" th:id="'answer_' + ${answer.id}" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].answer'" th:value="${answer.answer}" />
+                                <input type="hidden" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].question.id'" th:value="${question.id}" />
+                                <label class="text-white" th:for="'answer_' + ${answer.id}" th:text="${answer.answer}"></label>
+                                <br/>
+                            </div>
+                        </div>
+                        <div th:if="${question.answerType.getLabel} == 'Няколко верни'">
+                            <div th:each="answer : ${question.answerList}">
+                                <input class="form-check-input" type="checkbox" th:id="'answer_' + ${answer.id}" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].answer'" th:value="${answer.answer}" />
+                                <input type="hidden" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].question.id'" th:value="${question.id}" />
+                                <label class="text-white form-check-label" th:for="'answer_' + ${answer.id}" th:text="${answer.answer}"></label>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-success btn-form" type="submit">Запиши</button>
+                    </div>
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../'">Отказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|"/></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link th:replace="~{fragment/header.html}">
+    <title>Проверка на тест</title>
+</head>
+<body>
+<h2 class="text-center p-4 text-white ">ПРОВЕРКА НА ТЕСТ</h2>
+<div class="container col-8">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <div class="col d-flex justify-content-center align-items-center">
+            <table class="table table-striped table-dark table-bordered table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Курс</th>
+                    <th scope="col">Тест</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Брой въпроси</th>
+                    <th scope="col">Продължителност</th>
+                    <th scope="col">Минимален процент</th>
+                    <th scope="col">Задължителен</th>
+                    <th scope="col">Курсист</th>
+                    <th scope="col">Брой точки</th>
+                    <th scope="col">Взет</th>
+                    <th th:if="${!#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr th:if="${testResultList.empty}">
+                    <td style="text-align:center" colspan="11"> Няма тестове за проверка. </td>
+                </tr>
+                <tr th:each="testResult : ${testResultList}">
+                    <td>
+                        <span th:text="${testResult.test.lecture.module.course.name}"> Курс </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.test.name}"> Име </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.test.description}"> Описание </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.test.questionsNumber}"> Брой въпроси </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.test.time}"> Продължителност </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.test.minPassingPercentage} + ' ' + '%'"> Минимален процент </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.test.mandatory ? 'Да' : 'Не'}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.student.firstName + ' ' + testResult.student.lastName}"> Курсист </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.result}"> Брой точки </span>
+                    </td>
+                    <td>
+                        <span th:text="${testResult.testPassed ? 'Да' : 'Не'}"></span>
+                    </td>
+                    <td th:if="${!#authorization.expression('isAuthenticated()')}">
+                        <form th:action="@{/test/check}" th:object="${id}" method="get">
+                            <input type="hidden" name="id" th:value="${testResult.id}" />
+                            <input class="btn btn-warning btn-block" type="submit" value="Провери" />
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|" />
+    </p>
+</div>
+</body>
+</html>

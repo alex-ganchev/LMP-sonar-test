@@ -37,7 +37,7 @@
                     <td><span th:text="${test.description}"> Описание </span></td>
                     <td><span th:text="${test.questionsNumber}"> Брой въпроси </span></td>
                     <td><span th:text="${test.time}"> Продължителност </span></td>
-                    <td><span th:text="${test.minPassingPercentage} + ' ' + '%'"> Продължителност </span></td>
+                    <td><span th:text="${test.minPassingPercentage} + ' ' + '%'"> Минимален процент </span></td>
                     <td><span th:text="${test.mandatory ? 'Да' : 'Не'}"> </span></td>
                     <td th:if="${#authorization.expression('isAuthenticated()')}">
                         <form th:action="@{/test/edit}" th:object="${id}" method="get">

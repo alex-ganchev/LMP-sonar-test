@@ -11,6 +11,9 @@ public class TestResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
+    @ManyToOne
     @JoinColumn(name = "test_id")
     private Test test;
     @OneToMany(mappedBy = "testResult")
@@ -35,6 +38,14 @@ public class TestResult {
         this.test = test;
     }
 
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
     public List<TestStudentAnswer> getTestStudentAnswerList() {
         return testStudentAnswerList;
     }
@@ -49,5 +60,13 @@ public class TestResult {
 
     public void setResult(int result) {
         this.result = result;
+    }
+
+    public boolean isTestPassed() {
+        return isTestPassed;
+    }
+
+    public void setTestPassed(boolean testPassed) {
+        isTestPassed = testPassed;
     }
 }

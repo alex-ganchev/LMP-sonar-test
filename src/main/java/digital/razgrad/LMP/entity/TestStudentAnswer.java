@@ -11,8 +11,10 @@ public class TestStudentAnswer {
     @ManyToOne
     @JoinColumn(name = "test_result_id")
     private TestResult testResult;
+
     @ManyToOne
     @JoinColumn(name = "student_id")
+    //Може да се премахне, добавен е student към testResult
     private Student student;
     @ManyToOne
     @JoinColumn(name = "question_id")

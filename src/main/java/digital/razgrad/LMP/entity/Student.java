@@ -10,19 +10,21 @@ import java.util.Set;
 @DiscriminatorValue("Student")
 public class Student extends User {
 
-    @ManyToMany
+    @OneToMany(mappedBy = "student")
 //    @JoinTable(
 //            name = "students_tests",
 //            joinColumns = @JoinColumn(name = "student_id"),
 //            inverseJoinColumns = @JoinColumn(name = "test_id"))
-    private Set<Test> tests;
+    private List<TestResult> testResults;
     @ManyToMany
 //    @JoinTable(
 //            name = "students_modules",
 //            joinColumns = @JoinColumn(name = "student_id"),
 //            inverseJoinColumns = @JoinColumn(name = "module_id"))
     private Set<Module> modules;
+
     @OneToMany(mappedBy = "student")
+    //Може да се премахне, добавен е student към testResult
     private List<TestStudentAnswer> testStudentAnswerList;
     @OneToMany(mappedBy = "student")
     private List<Application> applicationList;
@@ -35,12 +37,21 @@ public class Student extends User {
 //      защо не иска да тръгне с допълнителното конфигуриране :((((
     private Set<Course> courses;
 
-    public Set<Test> getTests() {
-        return tests;
+//    public Set<Test> getTests() {
+//        return tests;
+//    }
+//
+//    public void setTests(Set<Test> tests) {
+//        this.tests = tests;
+//    }
+
+
+    public List<TestResult> getTestResults() {
+        return testResults;
     }
 
-    public void setTests(Set<Test> tests) {
-        this.tests = tests;
+    public void setTestResults(List<TestResult> testResults) {
+        this.testResults = testResults;
     }
 
     public Set<Module> getModules() {
