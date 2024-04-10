@@ -4,9 +4,7 @@ import digital.razgrad.LMP.auth.MyUserDetails;
 import digital.razgrad.LMP.entity.*;
 import digital.razgrad.LMP.entity.Module;
 import digital.razgrad.LMP.hellper.EntityValidator;
-import digital.razgrad.LMP.repository.LectureRepository;
-import digital.razgrad.LMP.repository.QuestionRepository;
-import digital.razgrad.LMP.repository.TestRepository;
+import digital.razgrad.LMP.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -20,13 +18,19 @@ import java.util.*;
 @Service
 public class TestService {
     @Autowired
-    LectureRepository lectureRepository;
+    private LectureRepository lectureRepository;
     @Autowired
-    EntityValidator entityValidator;
+    private EntityValidator entityValidator;
     @Autowired
-    TestRepository testRepository;
+    private TestRepository testRepository;
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TestResultRepository testResultRepository;
+    @Autowired
+    private TestStudentAnswerRepository testStudentAnswerRepository;
 
     public String saveTest(Test test, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         boolean isEnoughQuestionsAvailable = validateEnoughQuestionsAvailable(test);
@@ -68,17 +72,27 @@ public class TestService {
     public String startTest(Long id, Model model) {
         Optional<Test> optionalTest = testRepository.findById(id);
         if (optionalTest.isPresent()) {
-           model.addAttribute("test", optionalTest.get());
-           model.addAttribute("questionList", generateTest(optionalTest.get()));
-           model.addAttribute("testResult", new TestResult());
+            model.addAttribute("test", optionalTest.get());
+            model.addAttribute("questionList", generateTest(optionalTest.get()));
+            model.addAttribute("testResult", new TestResult());
         }
         return "/test/start";
 
     }
 
-    public String finishTest(Test test, Authentication authentication, Model model) {
+    public String finishTest(TestResult testResult, Authentication authentication, Model model) {
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        return "/lecture/list";
+        Optional<User> optionalUser = userRepository.findById(userDetails.getId());
+        List<TestStudentAnswer> testStudentAnswerList = testResult.getTestStudentAnswerList();
+        if (optionalUser.isPresent()) {
+            TestResult savedTestResult = testResultRepository.save(testResult);
+            for (TestStudentAnswer studentAnswer : testStudentAnswerList) {
+                studentAnswer.setStudent((Student)optionalUser.get());
+                studentAnswer.setTestResult(savedTestResult);
+                testStudentAnswerRepository.save(studentAnswer);
+            }
+        }
+        return "/index";
 
     }
 
@@ -94,7 +108,8 @@ public class TestService {
         }
         return "redirect:/test/list";
     }
-    private Set<Question> generateTest (Test test){
+
+    private Set<Question> generateTest(Test test) {
         Set<Question> questionSet = new HashSet<>();
         List<Question> allQuestionByLecture = questionRepository.findByLecture(test.getLecture());
         int questionNumber = allQuestionByLecture.size();

@@ -1,6 +1,7 @@
 package digital.razgrad.LMP.controller;
 
 import digital.razgrad.LMP.entity.Test;
+import digital.razgrad.LMP.entity.TestResult;
 import digital.razgrad.LMP.repository.LectureRepository;
 import digital.razgrad.LMP.repository.TestRepository;
 import digital.razgrad.LMP.service.TestService;
@@ -59,5 +60,9 @@ public class TestController {
     @GetMapping("/start")
     private String startTest(@RequestParam Long id, Model model) {
         return testService.startTest(id, model);
+    }
+    @PostMapping("/finish")
+    private String finishTest(@Valid @ModelAttribute TestResult testResult, Authentication authentication, Model model){
+        return testService.finishTest(testResult, authentication, model);
     }
 }
