@@ -14,8 +14,9 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(mappedBy = "testSet")
-    private Set<Student> studentSet;
+   // @ManyToMany(mappedBy = "testSet")
+    @ManyToMany
+    private Set<Student> students;
     //@OneToOne(mappedBy = "test")
     @OneToOne
     private Lecture lecture;
@@ -46,12 +47,12 @@ public class Test {
         this.id = id;
     }
 
-    public Set<Student> getStudentSet() {
-        return studentSet;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setStudentSet(Set<Student> studentSet) {
-        this.studentSet = studentSet;
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
     public Lecture getLecture() {

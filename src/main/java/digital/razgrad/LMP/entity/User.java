@@ -131,4 +131,3 @@ public abstract class User {
         this.interests = interests;
     }
 }
-

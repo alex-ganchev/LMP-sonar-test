@@ -23,7 +23,7 @@
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="course">Курс*</label>
-                    <select class="form-select" id="course" th:field="*{course}">
+                    <select class="form-select" id="course" th:field="*{course}" >
                         <option th:each="course : ${courseList}" th:text="${course.name}" th:value="${course.id}">
                     </select>
                 </div>
@@ -31,6 +31,15 @@
                     <label class="text-white" for="date">Дата*</label>
                     <div class="message" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" ></div>
                     <input type="date" class="form-control" id="date" th:field="*{startDate}">
+                </div>
+                <div class="form-group">
+                    <label class="text-white" for="name">Участници</label>
+                    <div class="message" th:if="${#fields.hasErrors('students')}" th:errors="*{students}"></div>
+                    <select class="form-select" multiple th:field="*{students}">
+                        <option th:each="student : ${studentList}"
+                                th:text="${student.firstName + ' ' + student.lastName}"
+                                th:value="${student.id}">
+                    </select>
                 </div>
                 <div class="row justify-content-center ">
                     <div class="col-auto mt-4">

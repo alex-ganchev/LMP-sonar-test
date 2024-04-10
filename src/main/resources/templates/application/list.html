@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2 class="text-center p-4 text-white ">СПИСЪК НА КАНДИДАТУРИТЕ</h2>
-<div class="container col-8">
+<div class="container col-11">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <div class="col d-flex justify-content-center align-items-center">
             <table class="table table-striped table-dark table-bordered table-hover">
@@ -39,7 +39,7 @@
                     <td><span th:text="${candidate.course.startDate}"> Начална дата </span></td>
                     <td><span th:text="${candidate.course.city}"> Град </span></td>
                     <td><ul>
-                        <li th:each="teacher : ${candidate.course.teacherSet}" th:text="${teacher.firstName}"></li>
+                        <li th:each="teacher : ${candidate.course.teachers}" th:text="${teacher.firstName}"></li>
                         </ul>
                     </td>
                     <td><span th:text="${candidate.student.firstName}"> Име </span></td>

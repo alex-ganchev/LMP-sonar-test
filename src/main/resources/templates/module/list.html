@@ -38,7 +38,7 @@
                 </td>
                 <td>
                     <ul>
-                    <li th:each="student : ${studentSet}" th:text="${student.firstName}"></li>
+                    <li th:each="student : ${module.students}" th:text="${student.firstName + ' ' + student.lastName }"></li>
                     </ul>
                 </td>
                 <td th:if="${#authorization.expression('isAuthenticated()')}">

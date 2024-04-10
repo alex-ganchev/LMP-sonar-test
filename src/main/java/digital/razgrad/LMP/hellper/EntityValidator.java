@@ -37,14 +37,14 @@ public class EntityValidator {
     }
     public boolean checkSafeDeleteCourse(Long id) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
-        if (optionalCourse.isPresent() && optionalCourse.get().getModuleSet().isEmpty() && optionalCourse.get().getTeacherSet().isEmpty()) {
+        if (optionalCourse.isPresent() && optionalCourse.get().getModuleSet().isEmpty() && optionalCourse.get().getTeachers().isEmpty()) {
             return true;
         }
         return false;
     }
     public boolean checkSafeDeleteModule(Long id) {
         Optional<Module> optionalModule = moduleRepository.findById(id);
-        if (optionalModule.isPresent() && optionalModule.get().getStudentSet().isEmpty() && optionalModule.get().getLectureSet().isEmpty()) {
+        if (optionalModule.isPresent() && optionalModule.get().getStudents().isEmpty() && optionalModule.get().getLectureSet().isEmpty()) {
             return true;
         }
         return false;
@@ -53,9 +53,9 @@ public class EntityValidator {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (user instanceof Student && ((Student) user).getModuleSet().isEmpty() && ((Student) user).getTestSet().isEmpty()){
+            if (user instanceof Student && ((Student) user).getModules().isEmpty() && ((Student) user).getTests().isEmpty()){
                 return true;
-            } else if (user instanceof Teacher && ((Teacher) user).getCourseSet().isEmpty()) {
+            } else if (user instanceof Teacher && ((Teacher) user).getCourses().isEmpty()) {
                 return true;
             } else{
                 return true;
