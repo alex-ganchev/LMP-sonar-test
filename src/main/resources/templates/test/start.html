@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link th:replace="~{fragment/header.html}">
+    <title>Решаване на тест</title>
+</head>
+<body>
+<h2 class="text-center p-4 text-white ">РЕШАВАНЕ НА ТЕСТ</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 col-auto">
+            <form action="" th:action="@{/test/finish}" th:object="${testResult}" method="post">
+                <div th:each="question, itemStat : ${questionList}">
+                    <div class="form-group">
+                        <label class="text-white" th:text="${question.question}">Въпрос</label>
+                        <br/>
+                        <div th:if="${question.answerType.getLabel} == 'Отворен'">
+                            <input type="text" class="form-control text-white" th:id="'answer_' + ${question.id}" th:name="'question_' + ${question.id}" />
+                        </div>
+                        <div th:if="${question.answerType.getLabel} == 'Един верен'">
+                            <div th:each="answer : ${question.answerList}">
+                                <input type="radio" th:id="'answer_' + ${answer.id}" th:name="'question_' + ${question.id}" th:value="${answer}" />
+                                <label class="text-white" th:for="'answer_' + ${answer.id}" th:text="${answer.answer}"></label>
+                                <br/>
+                            </div>
+                        </div>
+                        <div th:if="${question.answerType.getLabel} == 'Няколко врени'">
+                            <div th:each="answer : ${question.answerList}">
+                                <input class="form-check-input" type="checkbox" th:id="'answer_' + ${answer.id}" th:name="'question_' + ${question.id}" th:value="${answer}" />
+                                <label class="text-white form-check-label" th:for="'answer_' + ${answer.id}" th:text="${answer.answer}"></label>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                    <p></p>>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-success btn-form" type="submit">Запиши</button>
+                    </div>
+                    <div class="col-auto mt-4">
+                        <button class="btn btn-danger btn-form" type="button" onclick="window.location.href='../'">Отказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="savemessage">
+    <p style="text-align:center" th:text="|${message}|"/></p>
+</div>
+</body>
+</html>
