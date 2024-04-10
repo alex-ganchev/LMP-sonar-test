@@ -33,12 +33,11 @@
                     <td><span th:text="${lecture.name}"> Лекция </span></td>
                     <td><span th:text="${lecture.description}"> Описание </span></td>
                     <td>
-                         <span th:if="${lecture.presentation != null}">
+                         <span th:if="${lecture.presentation != ''}">
                         <a th:href="${lecture.presentation}" target="_blank" class="btn btn-success btn-block">Покажи</a>
                          </span>
-                        <span th:if="${lecture.presentation == null}">Липсва</span>
+                        <span th:if="${lecture.presentation == ''}">Липсва</span>
                     </td>
-
                     <td><iframe class="embed-responsive-item" th:src="${lecture.video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe></td>
                     <td>
                         <span th:if="${lecture.test != null}">

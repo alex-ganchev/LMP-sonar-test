@@ -4,6 +4,7 @@ import digital.razgrad.LMP.entity.Test;
 import digital.razgrad.LMP.entity.TestResult;
 import digital.razgrad.LMP.repository.LectureRepository;
 import digital.razgrad.LMP.repository.TestRepository;
+import digital.razgrad.LMP.repository.TestResultRepository;
 import digital.razgrad.LMP.service.TestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class TestController {
     private TestRepository testRepository;
     @Autowired
     private TestService testService;
+    @Autowired
+    TestResultRepository testResultRepository;
 
     @GetMapping("/add")
     private String addTest(Model model) {
@@ -61,8 +64,18 @@ public class TestController {
     private String startTest(@RequestParam Long id, Model model) {
         return testService.startTest(id, model);
     }
+
     @PostMapping("/finish")
-    private String finishTest(@Valid @ModelAttribute TestResult testResult, Authentication authentication, Model model){
+    private String finishTest(@Valid @ModelAttribute TestResult testResult, Authentication authentication, Model model) {
         return testService.finishTest(testResult, authentication, model);
     }
+
+    @GetMapping("/result")
+    private String viewAllTestResult(Model model) {
+        model.addAttribute(testResultRepository.findAll());
+        return "/test/result-list";
+    }
+    @GetMapping("/check")
+    private String checkTestResult(@RequestParam Long id, Model model) {
+        return testService.checkTestResult(id, model);    }
 }

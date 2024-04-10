@@ -32,6 +32,7 @@ public class TestService {
     @Autowired
     private TestStudentAnswerRepository testStudentAnswerRepository;
 
+
     public String saveTest(Test test, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         boolean isEnoughQuestionsAvailable = validateEnoughQuestionsAvailable(test);
         boolean isTextExistForLecture = validateTestExistsForLecture(test);
@@ -85,9 +86,10 @@ public class TestService {
         Optional<User> optionalUser = userRepository.findById(userDetails.getId());
         List<TestStudentAnswer> testStudentAnswerList = testResult.getTestStudentAnswerList();
         if (optionalUser.isPresent()) {
+            testResult.setStudent((Student) optionalUser.get());
             TestResult savedTestResult = testResultRepository.save(testResult);
             for (TestStudentAnswer studentAnswer : testStudentAnswerList) {
-                studentAnswer.setStudent((Student)optionalUser.get());
+                studentAnswer.setStudent((Student) optionalUser.get());
                 studentAnswer.setTestResult(savedTestResult);
                 testStudentAnswerRepository.save(studentAnswer);
             }
@@ -107,6 +109,14 @@ public class TestService {
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(testRepository.existsById(id)));
         }
         return "redirect:/test/list";
+    }
+    public String checkTestResult(Long id, Model model) {
+       Optional<TestResult> optionalTestResult = testResultRepository.findById(id);
+       if(optionalTestResult.isPresent()){
+           model.addAttribute("testResult", optionalTestResult.get());
+           return "/test/check";
+       }
+        return "redirect/test/result";
     }
 
     private Set<Question> generateTest(Test test) {

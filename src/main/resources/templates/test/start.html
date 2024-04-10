@@ -24,10 +24,10 @@
                 <input type="hidden" th:name="test.id" th:value="${test.id}" />
                 <div th:each="question, itemStat : ${questionList}">
                     <div class="form-group">
-                        <label class="text-white" th:text="${question.question}">Въпрос</label>
+                        <label class="text-white" th:text="${question.question + ' - ' + question.points + ' точки'}">Въпрос</label>
                         <br/>
                         <div th:if="${question.answerType.getLabel} == 'Отворен'">
-                            <input type="text" class="form-control text-white" th:id="'answer_' + ${question.id}" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].answer'" />
+                            <input type="text" class="form-control" th:id="'answer_' + ${question.id}" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].answer'" />
                             <input type="hidden" th:name="'testStudentAnswerList[' + ${itemStat.index} + '].question.id'" th:value="${question.id}" />
                         </div>
                         <div th:if="${question.answerType.getLabel} == 'Един верен'">

@@ -53,7 +53,7 @@ public class EntityValidator {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (user instanceof Student && ((Student) user).getModules().isEmpty() && ((Student) user).getTests().isEmpty()){
+            if (user instanceof Student && ((Student) user).getModules().isEmpty() && ((Student) user).getTestResults().isEmpty()){
                 return true;
             } else if (user instanceof Teacher && ((Teacher) user).getCourses().isEmpty()) {
                 return true;
