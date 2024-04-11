@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -110,13 +111,58 @@ public class TestService {
         }
         return "redirect:/test/list";
     }
+
     public String checkTestResult(Long id, Model model) {
-       Optional<TestResult> optionalTestResult = testResultRepository.findById(id);
-       if(optionalTestResult.isPresent()){
-           model.addAttribute("testResult", optionalTestResult.get());
-           return "/test/check";
-       }
+        Optional<TestResult> optionalTestResult = testResultRepository.findById(id);
+        if (optionalTestResult.isPresent()) {
+            model.addAttribute("testResult", optionalTestResult.get());
+            return "/test/check";
+        }
         return "redirect/test/result";
+    }
+
+    public String updateTestResult(TestResult testResult,RedirectAttributes redirectAttributes, Model model) {
+        Optional<TestResult> optionalTestResult = testResultRepository.findById(testResult.getId());
+        if (optionalTestResult.isPresent()) {
+            List<TestStudentAnswer> testStudentAnswerList = optionalTestResult.get().getTestStudentAnswerList();
+            for (int i = 0; i < testStudentAnswerList.size(); i++) {
+                testStudentAnswerList.get(i).setCorrect(testResult.getTestStudentAnswerList().get(i).isCorrect());
+            }
+            optionalTestResult.get().setTestStudentAnswerList(testStudentAnswerList);
+            testResultRepository.save(optionalTestResult.get());
+            calculatePoint(optionalTestResult.get());
+            redirectAttributes.addFlashAttribute("message", "Успешно проверихте теста!");
+        }
+        return "redirect:/test/result";
+    }
+    //TODO
+    //Да се добави поле в testResult за максимален брой точки и процент на верните отговори и да се преправят/опростят методите.
+
+    private void calculatePoint(TestResult testResult) {
+        Optional<TestResult> optionalTestResult = testResultRepository.findById(testResult.getId());
+        int studentTestPoints = 0;
+        int maxTestPoints = 0;
+        if (optionalTestResult.isPresent()) {
+            TestResult newTestResult = optionalTestResult.get();
+            for (TestStudentAnswer testStudentAnswer : newTestResult.getTestStudentAnswerList()) {
+                maxTestPoints += testStudentAnswer.getQuestion().getPoints();
+                if (testStudentAnswer.isCorrect()) {
+                    studentTestPoints += testStudentAnswer.getQuestion().getPoints();
+                }
+            }
+            newTestResult.setResult(studentTestPoints);
+            boolean isPassed = isTestPassed(studentTestPoints, maxTestPoints, testResult.getTest().getMinPassingPercentage());
+            newTestResult.setTestPassed(isPassed);
+            testResultRepository.save(newTestResult);
+        }
+    }
+
+    private boolean isTestPassed(int studentTestPoints, int maxTestPoints, int minPassingPercentage) {
+        System.out.println((studentTestPoints / (double) maxTestPoints * 100.00));
+        if ((studentTestPoints / (double) maxTestPoints * 100.00) >= minPassingPercentage) {
+            return true;
+        }
+        return false;
     }
 
     private Set<Question> generateTest(Test test) {

@@ -78,4 +78,8 @@ public class TestController {
     @GetMapping("/check")
     private String checkTestResult(@RequestParam Long id, Model model) {
         return testService.checkTestResult(id, model);    }
+    @PostMapping("/check")
+    private String updateTestResult(@ModelAttribute TestResult testResult, RedirectAttributes redirectAttributes, Model model){
+        return testService.updateTestResult(testResult,redirectAttributes,model);
+    }
 }
