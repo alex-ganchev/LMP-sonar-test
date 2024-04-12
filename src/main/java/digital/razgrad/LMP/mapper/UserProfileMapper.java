@@ -18,6 +18,7 @@ public class UserProfileMapper {
         userProfileDTO.setUserRole(user.getUserRole());
         userProfileDTO.setExperience(user.getExperience());
         userProfileDTO.setInterests(user.getInterests());
+
         return userProfileDTO;
     }
 }

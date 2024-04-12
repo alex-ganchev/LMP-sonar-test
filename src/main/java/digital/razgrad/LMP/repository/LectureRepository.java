@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Set;
 
 public interface LectureRepository extends CrudRepository<Lecture,Long> {
     @Query(value = "SELECT * FROM modules WHERE course_id = :id", nativeQuery = true)

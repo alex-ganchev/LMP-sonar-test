@@ -14,14 +14,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-    @Autowired
     private CourseRepository courseRepository;
-    @Autowired
+
     private CourseService courseService;
+
+    @Autowired
+    private void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    private void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     @GetMapping("/add")
     private String addCourse(Model model) {
-       return courseService.addCourse(model);
+        return courseService.addCourse(model);
     }
 
     @PostMapping("/add")

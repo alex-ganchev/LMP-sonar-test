@@ -2,11 +2,8 @@ package digital.razgrad.LMP.entity;
 
 import digital.razgrad.LMP.constant.AnswerType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="questions")
@@ -14,8 +11,7 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answerList;
     @ManyToOne
     @JoinColumn(name = "lecture_id")

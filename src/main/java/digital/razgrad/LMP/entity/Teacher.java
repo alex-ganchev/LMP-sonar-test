@@ -3,7 +3,6 @@ package digital.razgrad.LMP.entity;
 import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

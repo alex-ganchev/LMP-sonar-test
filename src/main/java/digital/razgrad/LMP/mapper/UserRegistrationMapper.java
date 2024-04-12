@@ -1,6 +1,5 @@
 package digital.razgrad.LMP.mapper;
 
-
 import digital.razgrad.LMP.dto.UserRegistrationDTO;
 import digital.razgrad.LMP.entity.Student;
 import digital.razgrad.LMP.entity.User;
@@ -19,6 +18,7 @@ public class UserRegistrationMapper {
         user.setCity(userRegistrationDTO.getCity());
         user.setInterests(userRegistrationDTO.getInterests());
         user.setExperience(userRegistrationDTO.getExperience());
+
         return user;
     }
 }

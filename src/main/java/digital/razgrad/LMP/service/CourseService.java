@@ -4,7 +4,6 @@ import digital.razgrad.LMP.constant.CourseStatus;
 import digital.razgrad.LMP.constant.CourseType;
 import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Course;
-import digital.razgrad.LMP.entity.Teacher;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.UserRepository;
@@ -20,12 +19,22 @@ import java.util.Optional;
 
 @Service
 public class CourseService {
-    @Autowired
     private CourseRepository courseRepository;
-    @Autowired
     private EntityValidator entityValidator;
-    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+    @Autowired
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
+    @Autowired
+    private void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public String addCourse(Model model) {
         model.addAttribute("typeList", CourseType.values());
         model.addAttribute("course", new Course());
@@ -55,6 +64,7 @@ public class CourseService {
         }
         return "redirect:/course/list";
     }
+
     public String updateCourse(Course course, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("typeList", CourseType.values());
@@ -68,11 +78,21 @@ public class CourseService {
     }
 
     public String deleteCourse(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (entityValidator.checkSafeDeleteCourse(id)) {
+        if (validateSafeDeleteCourse(id)) {
             courseRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(courseRepository.existsById(id)));
+            return "redirect:/course/list";
         }
-        redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(courseRepository.existsById(id)));
+        redirectAttributes.addFlashAttribute("message", "Курса има добавени лектори, записани курсисти и/или добавени модули. Не може да бъде изтрит!");
         return "redirect:/course/list";
+    }
+
+    private boolean validateSafeDeleteCourse(Long id) {
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+        if (optionalCourse.isPresent() && optionalCourse.get().getModuleSet().isEmpty() && optionalCourse.get().getTeachers().isEmpty() && optionalCourse.get().getStudents().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
 }

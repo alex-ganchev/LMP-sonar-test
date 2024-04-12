@@ -2,10 +2,10 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <link th:replace="~{fragment/header.html}">
-    <title>Проверка на тест</title>
+    <title>Решени тестове</title>
 </head>
 <body>
-<h2 class="text-center p-4 text-white ">ПРОВЕРКА НА ТЕСТ</h2>
+<h2 class="text-center p-4 text-white ">РЕШЕНИ ТЕСТОВЕ</h2>
 <div class="container col-8">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <div class="col d-flex justify-content-center align-items-center">
@@ -27,7 +27,7 @@
                 </thead>
                 <tbody class="table-group-divider">
                 <tr th:if="${testResultList.empty}">
-                    <td style="text-align:center" colspan="11"> Няма тестове за проверка. </td>
+                    <td style="text-align:center" colspan="11"> Няма решени тестове. </td>
                 </tr>
                 <tr th:each="testResult : ${testResultList}">
                     <td>

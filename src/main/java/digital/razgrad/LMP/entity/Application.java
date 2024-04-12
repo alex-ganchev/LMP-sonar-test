@@ -3,16 +3,16 @@ package digital.razgrad.LMP.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="applications")
+@Table(name = "applications")
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "student_id",nullable = false, unique = true)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
     @ManyToOne
-    @JoinColumn(name = "course_id",nullable = false, unique = true)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
     @Column(columnDefinition = "boolean DEFAULT '0'", nullable = false)
     private boolean isApproved;

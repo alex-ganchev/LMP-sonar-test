@@ -18,14 +18,34 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/test")
 public class TestController {
-    @Autowired
+
     private LectureRepository lectureRepository;
-    @Autowired
+
     private TestRepository testRepository;
-    @Autowired
+
     private TestService testService;
+
+    private TestResultRepository testResultRepository;
+
     @Autowired
-    TestResultRepository testResultRepository;
+    private void setLectureRepository(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
+
+    @Autowired
+    private void setTestRepository(TestRepository testRepository) {
+        this.testRepository = testRepository;
+    }
+
+    @Autowired
+    private void setTestService(TestService testService) {
+        this.testService = testService;
+    }
+
+    @Autowired
+    private void setTestResultRepository(TestResultRepository testResultRepository) {
+        this.testResultRepository = testResultRepository;
+    }
 
     @GetMapping("/add")
     private String addTest(Model model) {
@@ -75,7 +95,14 @@ public class TestController {
         model.addAttribute(testResultRepository.findAll());
         return "/test/result-list";
     }
+
     @GetMapping("/check")
     private String checkTestResult(@RequestParam Long id, Model model) {
-        return testService.checkTestResult(id, model);    }
+        return testService.checkTestResult(id, model);
+    }
+
+    @PostMapping("/check")
+    private String updateTestResult(@ModelAttribute TestResult testResult, RedirectAttributes redirectAttributes, Model model) {
+        return testService.updateTestResult(testResult, redirectAttributes, model);
+    }
 }

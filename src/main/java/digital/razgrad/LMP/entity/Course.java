@@ -3,13 +3,9 @@ package digital.razgrad.LMP.entity;
 import digital.razgrad.LMP.constant.CourseStatus;
 import digital.razgrad.LMP.constant.CourseType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,10 +20,11 @@ public class Course {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
     @OneToMany(mappedBy = "course")
-    @OrderBy("id")
+    @OrderBy("name")
     private Set<Module> moduleSet;
    // @ManyToMany(mappedBy = "courseSet")
     @ManyToMany
+    @OrderBy("firstName,lastName")
     private Set<Teacher> teachers;
     @Enumerated(EnumType.STRING)
     private CourseType type;
@@ -37,7 +34,7 @@ public class Course {
     private String city;
     @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Application> applicationSet;
     //@ManyToMany(mappedBy = "courses")
     // 5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,

@@ -2,7 +2,6 @@ package digital.razgrad.LMP.service;
 
 import digital.razgrad.LMP.auth.MyUserDetails;
 import digital.razgrad.LMP.entity.*;
-import digital.razgrad.LMP.entity.Module;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,28 +9,54 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
 @Service
 public class TestService {
-    @Autowired
     private LectureRepository lectureRepository;
-    @Autowired
     private EntityValidator entityValidator;
-    @Autowired
     private TestRepository testRepository;
-    @Autowired
     private QuestionRepository questionRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private TestResultRepository testResultRepository;
-    @Autowired
     private TestStudentAnswerRepository testStudentAnswerRepository;
 
+    @Autowired
+    private void setLectureRepository(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
+
+    @Autowired
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
+
+    @Autowired
+    private void setTestRepository(TestRepository testRepository) {
+        this.testRepository = testRepository;
+    }
+
+    @Autowired
+    private void setQuestionRepository(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Autowired
+    private void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    private void setTestResultRepository(TestResultRepository testResultRepository) {
+        this.testResultRepository = testResultRepository;
+    }
+
+    @Autowired
+    private void setTestStudentAnswerRepository(TestStudentAnswerRepository testStudentAnswerRepository) {
+        this.testStudentAnswerRepository = testStudentAnswerRepository;
+    }
 
     public String saveTest(Test test, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         boolean isEnoughQuestionsAvailable = validateEnoughQuestionsAvailable(test);
@@ -98,25 +123,66 @@ public class TestService {
 
     }
 
-
     public String deleteTest(Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (id != null) {
-            try {
-                testRepository.deleteById(id);
-            } catch (Exception SQLIntegrityConstraintViolationException) {
-                System.out.println("Error: Не можете да изтриете теста!");
-            }
+        if (validateSafeDeleteTest(id)) {
+            testRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(testRepository.existsById(id)));
+            return "redirect:/test/list";
         }
+        redirectAttributes.addFlashAttribute("message", "Теста е част от решен тест. Не може да бъде изтрит!");
         return "redirect:/test/list";
     }
+
     public String checkTestResult(Long id, Model model) {
-       Optional<TestResult> optionalTestResult = testResultRepository.findById(id);
-       if(optionalTestResult.isPresent()){
-           model.addAttribute("testResult", optionalTestResult.get());
-           return "/test/check";
-       }
+        Optional<TestResult> optionalTestResult = testResultRepository.findById(id);
+        if (optionalTestResult.isPresent()) {
+            model.addAttribute("testResult", optionalTestResult.get());
+            return "/test/check";
+        }
         return "redirect/test/result";
+    }
+
+    public String updateTestResult(TestResult testResult, RedirectAttributes redirectAttributes, Model model) {
+        Optional<TestResult> optionalTestResult = testResultRepository.findById(testResult.getId());
+        if (optionalTestResult.isPresent()) {
+            List<TestStudentAnswer> testStudentAnswerList = optionalTestResult.get().getTestStudentAnswerList();
+            for (int i = 0; i < testStudentAnswerList.size(); i++) {
+                testStudentAnswerList.get(i).setCorrect(testResult.getTestStudentAnswerList().get(i).isCorrect());
+            }
+            optionalTestResult.get().setTestStudentAnswerList(testStudentAnswerList);
+            testResultRepository.save(optionalTestResult.get());
+            calculatePoint(optionalTestResult.get());
+            redirectAttributes.addFlashAttribute("message", "Успешно проверихте теста!");
+        }
+        return "redirect:/test/result";
+    }
+    //TODO
+    //Да се добави поле в testResult за максимален брой точки и процент на верните отговори и да се преправят/опростят методите.
+
+    private void calculatePoint(TestResult testResult) {
+        Optional<TestResult> optionalTestResult = testResultRepository.findById(testResult.getId());
+        int studentTestPoints = 0;
+        int maxTestPoints = 0;
+        if (optionalTestResult.isPresent()) {
+            TestResult newTestResult = optionalTestResult.get();
+            for (TestStudentAnswer testStudentAnswer : newTestResult.getTestStudentAnswerList()) {
+                maxTestPoints += testStudentAnswer.getQuestion().getPoints();
+                if (testStudentAnswer.isCorrect()) {
+                    studentTestPoints += testStudentAnswer.getQuestion().getPoints();
+                }
+            }
+            newTestResult.setResult(studentTestPoints);
+            boolean isPassed = isTestPassed(studentTestPoints, maxTestPoints, testResult.getTest().getMinPassingPercentage());
+            newTestResult.setTestPassed(isPassed);
+            testResultRepository.save(newTestResult);
+        }
+    }
+
+    private boolean isTestPassed(int studentTestPoints, int maxTestPoints, int minPassingPercentage) {
+        if ((studentTestPoints / (double) maxTestPoints * 100.00) >= minPassingPercentage) {
+            return true;
+        }
+        return false;
     }
 
     private Set<Question> generateTest(Test test) {
@@ -126,6 +192,10 @@ public class TestService {
         Random rand = new Random();
         while (questionSet.size() < test.getQuestionsNumber()) {
             int randomQuestionNumber = rand.nextInt(questionNumber);
+            Question randomQuestion = allQuestionByLecture.get(randomQuestionNumber);
+            List<Answer> questionAnswerList = randomQuestion.getAnswerList();
+            List<Answer> questionRandomAnswerList = questionRandomAnswerList(questionAnswerList);
+            randomQuestion.setAnswerList(questionRandomAnswerList);
             questionSet.add(allQuestionByLecture.get(randomQuestionNumber));
         }
         return questionSet;
@@ -146,5 +216,22 @@ public class TestService {
             }
         }
         return false;
+    }
+
+    private boolean validateSafeDeleteTest(Long id) {
+        Optional<Test> optionalTest = testRepository.findById(id);
+        if (optionalTest.isPresent() && optionalTest.get().getTestResultList().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private List<Answer> questionRandomAnswerList(List<Answer> answerList) {
+        Set<Answer> answerSet = new HashSet<>();
+        for (Answer answer : answerList) {
+            answer.setCorrect(false);
+            answerSet.add(answer);
+        }
+        return new ArrayList<>(answerSet);
     }
 }

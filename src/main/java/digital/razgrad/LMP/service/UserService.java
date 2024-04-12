@@ -9,6 +9,7 @@ import digital.razgrad.LMP.dto.UserProfileDTO;
 import digital.razgrad.LMP.dto.UserRegistrationDTO;
 import digital.razgrad.LMP.dto.UserUpdateDTO;
 import digital.razgrad.LMP.entity.Course;
+import digital.razgrad.LMP.entity.Student;
 import digital.razgrad.LMP.entity.Teacher;
 import digital.razgrad.LMP.entity.User;
 import digital.razgrad.LMP.hellper.EntityValidator;
@@ -32,16 +33,31 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private UserRepository userRepository;
+    private UserRegistrationMapper userRegistrationMapper;
+    private UserUpdateMapper userUpdateMapper;
+    private UserProfileMapper userProfileMapper;
+    private EntityValidator entityValidator;
     @Autowired
-    UserRepository userRepository;
+    private void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     @Autowired
-    UserRegistrationMapper userRegistrationMapper;
+    private void setUserRegistrationMapper(UserRegistrationMapper userRegistrationMapper) {
+        this.userRegistrationMapper = userRegistrationMapper;
+    }
     @Autowired
-    UserUpdateMapper userUpdateMapper;
+    private void setUserUpdateMapper(UserUpdateMapper userUpdateMapper) {
+        this.userUpdateMapper = userUpdateMapper;
+    }
     @Autowired
-    UserProfileMapper userProfileMapper;
+    private void setUserProfileMapper(UserProfileMapper userProfileMapper) {
+        this.userProfileMapper = userProfileMapper;
+    }
     @Autowired
-    EntityValidator entityValidator;
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
 
     @Autowired
     public BCryptPasswordEncoder passwordEncoder() {
@@ -104,7 +120,7 @@ public class UserService {
             user.setPassword(passwordEncoder().encode(user.getPassword()));
         }
         user.setEnabled(true);
-        userRepository.save(user);
+        redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(userRepository.save(user)));
         return "redirect:/user/list";
     }
 
@@ -128,22 +144,45 @@ public class UserService {
         }
         userUpdateDTO.setUserRole(userRepository.findById(userUpdateDTO.getId()).get().getUserRole());
         User user = userUpdateMapper.toEntity(userUpdateDTO);
-        //user.setUserRole(userRepository.findById(user.getId()).get().getUserRole());
         if (user.getPassword().length() < 4) {
             model.addAttribute("message", "Паролaта е твърде кратка!");
             return "user/profile-edit";
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         user.setEnabled(true);
-        userRepository.save(user);
+        redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(userRepository.save(user)));
         return "redirect:/profile";
     }
 
     public String deleteUser(Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (entityValidator.checkSafeDeleteUser(id)) {
-            userRepository.deleteById(id);
+        if (id != null) {
+            try {
+                userRepository.deleteById(id);
+                redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(userRepository.existsById(id)));
+            } catch (Exception SQLIntegrityConstraintViolationException) {
+                redirectAttributes.addFlashAttribute("message", "Потребителя участва в релации. Не можете да изтриете потребителя!");
+            }
         }
-        redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(userRepository.existsById(id)));
-        return "redirect:/course/list";
+        return "redirect:/user/list";
     }
+//    private boolean validateSafeDeleteUser(Long id) {
+//        Optional<User> optionalUser = userRepository.findById(id);
+//        if (optionalUser.isPresent()) {
+//            User user = optionalUser.get();
+//            if (user instanceof Student && ((Student) user).getModules().isEmpty()
+//                    && ((Student) user).getTestResults().isEmpty()
+//                    && ((Student) user).getCourses().isEmpty()
+//                    && ((Student) user).getApplicationList().isEmpty()
+//                    && ((Student) user).getTestStudentAnswerList().isEmpty())
+//            {
+//                return true;
+//            } else if (user instanceof Teacher && ((Teacher) user).getCourses().isEmpty()
+//            ) {
+//                return true;
+//            } else{
+//                return true;
+//            }
+//        }
+//       return false;
+//    }
 }
