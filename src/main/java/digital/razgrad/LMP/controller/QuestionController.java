@@ -1,8 +1,6 @@
 package digital.razgrad.LMP.controller;
 
 import digital.razgrad.LMP.dto.QuestionRegistrationDTO;
-import digital.razgrad.LMP.entity.Question;
-import digital.razgrad.LMP.entity.Test;
 import digital.razgrad.LMP.repository.QuestionRepository;
 import digital.razgrad.LMP.service.QuestionService;
 import jakarta.validation.Valid;
@@ -16,11 +14,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/question")
 public class QuestionController {
-    @Autowired
-    QuestionRepository questionRepository;
+
+    private QuestionRepository questionRepository;
+
+    private QuestionService questionService;
 
     @Autowired
-    private QuestionService questionService;
+    private void setQuestionRepository(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Autowired
+    private void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @GetMapping("/add")
     private String addQuestion(Model model) {
@@ -31,11 +38,13 @@ public class QuestionController {
     private String saveQuestion(@Valid @ModelAttribute QuestionRegistrationDTO questionRegistrationDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         return questionService.saveQuestion(questionRegistrationDTO, bindingResult, redirectAttributes, model);
     }
+
     @GetMapping("/list")
     private String listAllQuestion(Model model) {
         model.addAttribute("questionList", questionRepository.findAll());
         return "/question/list";
     }
+
     @GetMapping("/edit")
     private String editQuestion(@RequestParam Long id, Model model) {
         return questionService.editQuestion(id, model);

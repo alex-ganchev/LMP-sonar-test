@@ -19,8 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
-    @Autowired
+
     private UserService userService;
+
+    @Autowired
+    private void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     private String login() {
@@ -40,12 +45,14 @@ public class UserController {
 
     @GetMapping("/profile")
     private String showProfile(Authentication authentication, Model model) {
-        return userService.showProfile(authentication,model);
+        return userService.showProfile(authentication, model);
     }
+
     @GetMapping("/user/list")
     private String listAllUsers(Model model) {
-      return userService.listAllUsers(model);
+        return userService.listAllUsers(model);
     }
+
     @GetMapping("/user/edit")
     private String editUser(@RequestParam Long id, Model model) {
         return userService.editUser(id, model);
@@ -55,6 +62,7 @@ public class UserController {
     private String updateUser(@Valid @ModelAttribute UserUpdateDTO userUpdateDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         return userService.updateUser(userUpdateDTO, bindingResult, redirectAttributes, model);
     }
+
     @GetMapping("/profile/edit")
     private String editProfile(@AuthenticationPrincipal MyUserDetails userDetails, Model model) {
         return userService.editProfile(userDetails, model);
@@ -66,8 +74,8 @@ public class UserController {
     }
 
     @PostMapping("/user/delete")
-    private String deleteUser(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model){
-        return userService.deleteUser(id, redirectAttributes,model);
+    private String deleteUser(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
+        return userService.deleteUser(id, redirectAttributes, model);
     }
 
     @GetMapping("/access-denied")

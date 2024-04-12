@@ -12,7 +12,7 @@ public class UserUpdateDTO {
     @Size(max = 20, message = "Максимален брой символи 20!")
     private String firstName;
 
-    @Size(min = 4, message = "Минимален брой символи 4!")
+    @Size(min = 1, message = "Минимален брой символи 1!")
     @Size(max = 20, message = "Максимален брой символи 20!")
     private String lastName;
 

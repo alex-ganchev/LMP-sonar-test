@@ -24,10 +24,11 @@ public class Course {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
     @OneToMany(mappedBy = "course")
-    @OrderBy("id")
+    @OrderBy("name")
     private Set<Module> moduleSet;
    // @ManyToMany(mappedBy = "courseSet")
     @ManyToMany
+    @OrderBy("firstName,lastName")
     private Set<Teacher> teachers;
     @Enumerated(EnumType.STRING)
     private CourseType type;

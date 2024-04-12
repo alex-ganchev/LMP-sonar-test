@@ -1,6 +1,5 @@
 package digital.razgrad.LMP.controller;
 
-import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.entity.Lecture;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.LectureRepository;
@@ -17,12 +16,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/lecture")
 public class LectureController {
 
-    @Autowired
+
     private CourseRepository courseRepository;
-    @Autowired
+
     private LectureRepository lectureRepository;
-    @Autowired
+
     private LectureService lectureService;
+
+    @Autowired
+    private void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    private void setLectureRepository(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
+
+    @Autowired
+    private void setLectureService(LectureService lectureService) {
+        this.lectureService = lectureService;
+    }
 
     @GetMapping("/select-course")
     private String selectCourse(Model model) {
@@ -45,6 +59,7 @@ public class LectureController {
         model.addAttribute("lectureList", lectureRepository.findAll());
         return ("/lecture/list");
     }
+
     @GetMapping("/edit")
     private String editLecture(@RequestParam Long id, Model model) {
         return lectureService.editLecture(id, model);

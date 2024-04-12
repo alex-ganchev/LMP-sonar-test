@@ -1,6 +1,5 @@
 package digital.razgrad.LMP.constant;
 
-
 public enum UserRole {
     ROLE_STUDENT("Курсист"),
     ROLE_TEACHER ("Преподавател"),
