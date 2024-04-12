@@ -32,8 +32,6 @@ public class Student extends User {
 //            name = "students_courses",
 //            joinColumns = @JoinColumn(name = "student_id"),
 //            inverseJoinColumns = @JoinColumn(name = "course_id"))
-//      5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,
-//      защо не иска да тръгне с допълнителното конфигуриране :((((
     private Set<Course> courses;
 
     public List<TestResult> getTestResults() {

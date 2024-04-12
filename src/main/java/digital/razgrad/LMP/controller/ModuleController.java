@@ -1,16 +1,24 @@
 package digital.razgrad.LMP.controller;
 
+import digital.razgrad.LMP.auth.MyUserDetails;
+import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Module;
+import digital.razgrad.LMP.entity.Student;
+import digital.razgrad.LMP.entity.User;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.ModuleRepository;
+import digital.razgrad.LMP.repository.UserRepository;
 import digital.razgrad.LMP.service.ModuleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/module")
@@ -21,6 +29,7 @@ public class ModuleController {
     private ModuleService moduleService;
 
     private ModuleRepository moduleRepository;
+
 
     @Autowired
     private void setCourseRepository(CourseRepository courseRepository) {
@@ -50,9 +59,8 @@ public class ModuleController {
     }
 
     @GetMapping("/list")
-    private String listAllModules(Model model) {
-        model.addAttribute("moduleList", moduleRepository.findAll());
-        return "/module/list";
+    private String listAllModules(Model model, Authentication authentication) {
+        return moduleService.listAllModules(model, authentication);
     }
 
     @GetMapping("/edit")

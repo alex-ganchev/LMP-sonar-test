@@ -11,4 +11,5 @@ import java.util.List;
 public interface LectureRepository extends CrudRepository<Lecture,Long> {
     @Query(value = "SELECT * FROM modules WHERE course_id = :id", nativeQuery = true)
     List<Module> findModulesByCourseId( @Param("id") Long id);
+    public List<Lecture> getLectureByModule(Module module);
 }

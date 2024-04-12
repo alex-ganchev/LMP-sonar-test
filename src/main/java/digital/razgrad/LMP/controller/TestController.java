@@ -86,13 +86,13 @@ public class TestController {
     }
 
     @PostMapping("/finish")
-    private String finishTest(@Valid @ModelAttribute TestResult testResult, Authentication authentication, Model model) {
-        return testService.finishTest(testResult, authentication, model);
+    private String finishTest(@Valid @ModelAttribute TestResult testResult, Authentication authentication, RedirectAttributes redirectAttributes, Model model) {
+        return testService.finishTest(testResult, authentication, redirectAttributes, model);
     }
 
     @GetMapping("/result")
     private String viewAllTestResult(Model model) {
-        model.addAttribute(testResultRepository.findAll());
+        model.addAttribute("testResultList",testResultRepository.findAll());
         return "/test/result-list";
     }
 

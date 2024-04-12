@@ -1,5 +1,7 @@
 package digital.razgrad.LMP.service;
 
+import digital.razgrad.LMP.auth.MyUserDetails;
+import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.entity.Lecture;
 import digital.razgrad.LMP.entity.Module;
@@ -8,12 +10,14 @@ import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.LectureRepository;
 import digital.razgrad.LMP.repository.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +56,17 @@ public class LectureService {
         }
         redirectAttributes.addFlashAttribute("message", "Избраният курс няма модули. Не можете да въвеждате лекции!");
         return "redirect:/lecture/select-course";
+    }
+
+    public String listAllLecture(Model model, Authentication authentication) {
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        if (userDetails.getRole().equals(UserRole.ROLE_STUDENT)) {
+            List<Module> moduleList = moduleRepository.getModuleByStudentsId(userDetails.getId());
+            model.addAttribute("lectureList", lectureRepository.getLectureByModule(moduleList.get(0)));
+        } else {
+            model.addAttribute("lectureList", lectureRepository.findAll());
+        }
+        return "/lecture/list";
     }
 
     public String saveLecture(Lecture lecture, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {

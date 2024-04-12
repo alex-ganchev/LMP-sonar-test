@@ -37,8 +37,6 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Application> applicationSet;
     //@ManyToMany(mappedBy = "courses")
-    // 5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,
-    // защо не иска да тръгне с допълнителното конфигуриране :((((
     @ManyToMany
     private Set<Student> students;
 
