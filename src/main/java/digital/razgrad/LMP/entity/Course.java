@@ -37,7 +37,7 @@ public class Course {
     private String city;
     @NotNull(message =  "Въведете дата!")
     private LocalDate startDate;
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Application> applicationSet;
     //@ManyToMany(mappedBy = "courses")
     // 5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,

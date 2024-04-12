@@ -27,23 +27,20 @@ public class ApplicationService {
     private CourseRepository courseRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private EntityValidator entityValidator;
     public String addApplication(Long id, Authentication authentication, RedirectAttributes redirectAttributes, Model model) {
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         Optional<Course> optionalCourse = courseRepository.findById(id);
         if (optionalCourse.isPresent()) {
             Optional<User> optionalUser = userRepository.findById(userDetails.getId());
             if (optionalUser.isPresent()) {
-                Application application = new Application((Student) optionalUser.get(), optionalCourse.get());
-                try {
+                if(validateDuplicateApplication(optionalUser.get().getId(),optionalCourse.get().getId())){
+                    Application application = new Application((Student) optionalUser.get(), optionalCourse.get());
                     applicationRepository.save(application);
                     redirectAttributes.addFlashAttribute("message", "Кандидатствахте успешно!");
-                } catch (Exception SQLIntegrityConstraintViolationException) {
+                }else
                     redirectAttributes.addFlashAttribute("message", "Вече сте кандитатствали за този курс!");
                 }
             }
-        }
         return "redirect:/course/list";
     }
     public String listAllUnProvedApplications(Model model) {
@@ -76,5 +73,12 @@ public class ApplicationService {
             }
         }
         return "redirect:/application/list";
+    }
+    private boolean validateDuplicateApplication(Long userId, Long courseId) {
+        Optional<Application> optionalApplication = applicationRepository.findByStudentIdAndCourseId(userId,courseId);
+        if (optionalApplication.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }
