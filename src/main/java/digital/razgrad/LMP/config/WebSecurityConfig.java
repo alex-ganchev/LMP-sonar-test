@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/style.css", "/images/**", "/course/list", "/registration", "/access-denied").permitAll()
                         .requestMatchers( "/profile","/module/list","/lecture/list","/application").authenticated()
                         .requestMatchers( "/application").hasAuthority( "ROLE_STUDENT")
-                        .requestMatchers( "/application/**","/course/**","/module/**").hasAnyAuthority( "ROLE_TEACHER", "ROLE_ADMIN")
+                        .requestMatchers( "/application/**","/course/**","/module/**","/lecture/**").hasAnyAuthority( "ROLE_TEACHER", "ROLE_ADMIN")
                         .requestMatchers( "/**").hasAuthority( "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )

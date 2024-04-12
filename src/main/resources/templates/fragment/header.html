@@ -45,17 +45,21 @@
                             </ul>
                         </li>
                     </div>
+                    <div sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="lectureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ЛЕКЦИИ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                             <li>
                                 <a class="dropdown-item" href="../lecture/select-course">ДОБАВИ</a>
                             </li>
+                            </div>
                             <li>
                                 <a class="dropdown-item" href="../lecture/list">СПИСЪК</a>
                             </li>
                         </ul>
                     </li>
+                    </div>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ТЕСТОВЕ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
@@ -83,15 +87,15 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <span th:if="${#authorization.expression('isAuthenticated()')}">
+                            <span th:if="${#authorization.expression('isAuthenticated()')}">
 										<span style="text-transform:uppercase" th:text="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}"></span>
-									</span>
+                            </span>
                             <span th:unless="${#authorization.expression('isAuthenticated()')}">
                              ПОТРЕБИТЕЛ
                               </span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li th:unless="${#authorization.expression('isAuthenticated()')}" >
+                            <li th:unless="${#authorization.expression('isAuthenticated()')}">
                                 <a class="dropdown-item" href="../login">ВХОД</a>
                             </li>
                             <li th:unless="${#authorization.expression('isAuthenticated()')}">

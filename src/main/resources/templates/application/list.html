@@ -25,7 +25,9 @@
                     <th scope="col">Град</th>
                     <th scope="col">Опит</th>
                     <th scope="col">Интереси</th>
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                     <th scope="col">Одобрение</th>
+                    </div>
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -49,14 +51,15 @@
                     <td><span th:text="${candidate.student.city}"> Град </span></td>
                     <td><span th:text="${candidate.student.experience}"> Опит </span></td>
                     <td><span th:text="${candidate.student.interests}"> Интереси </span></td>
-                    <td th:if="${!#authorization.expression('isAuthenticated()')}">
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                    <td>
                         <form th:action="@{/application/approve}" th:object="${id}" method="post">
                             <input type="hidden" name="id" th:value="${candidate.id}" />
                             <input class="btn btn-success btn-form" type="submit" value="Одобри"/>
                         </form>
                     </td>
+                    </div>
                 </tr>
-
                 </tbody>
             </table>
         </div>
