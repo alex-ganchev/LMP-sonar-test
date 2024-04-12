@@ -33,16 +33,31 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private UserRepository userRepository;
+    private UserRegistrationMapper userRegistrationMapper;
+    private UserUpdateMapper userUpdateMapper;
+    private UserProfileMapper userProfileMapper;
+    private EntityValidator entityValidator;
     @Autowired
-    UserRepository userRepository;
+    private void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     @Autowired
-    UserRegistrationMapper userRegistrationMapper;
+    private void setUserRegistrationMapper(UserRegistrationMapper userRegistrationMapper) {
+        this.userRegistrationMapper = userRegistrationMapper;
+    }
     @Autowired
-    UserUpdateMapper userUpdateMapper;
+    private void setUserUpdateMapper(UserUpdateMapper userUpdateMapper) {
+        this.userUpdateMapper = userUpdateMapper;
+    }
     @Autowired
-    UserProfileMapper userProfileMapper;
+    private void setUserProfileMapper(UserProfileMapper userProfileMapper) {
+        this.userProfileMapper = userProfileMapper;
+    }
     @Autowired
-    EntityValidator entityValidator;
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
 
     @Autowired
     public BCryptPasswordEncoder passwordEncoder() {

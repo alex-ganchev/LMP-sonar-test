@@ -14,19 +14,34 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class LectureService {
-    @Autowired
     private CourseRepository courseRepository;
-    @Autowired
     private ModuleRepository moduleRepository;
-    @Autowired
     private LectureRepository lectureRepository;
-    @Autowired
     private EntityValidator entityValidator;
+
+    @Autowired
+    private void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    private void setModuleRepository(ModuleRepository moduleRepository) {
+        this.moduleRepository = moduleRepository;
+    }
+
+    @Autowired
+    private void setLectureRepository(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
+
+    @Autowired
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
 
     public String selectCourse(Long id, RedirectAttributes redirectAttributes, Model model) {
         Optional<Course> optionalCourse = courseRepository.findById(id);

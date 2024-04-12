@@ -3,7 +3,7 @@ package digital.razgrad.LMP.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="answers")
+@Table(name = "answers")
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

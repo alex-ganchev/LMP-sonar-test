@@ -1,6 +1,5 @@
 package digital.razgrad.LMP.entity;
 
-import digital.razgrad.LMP.constant.UserRole;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -36,15 +35,6 @@ public class Student extends User {
 //      5 часа борба да установя защо релацията ManyToMany не работи и пак не ми е ясно,
 //      защо не иска да тръгне с допълнителното конфигуриране :((((
     private Set<Course> courses;
-
-//    public Set<Test> getTests() {
-//        return tests;
-//    }
-//
-//    public void setTests(Set<Test> tests) {
-//        this.tests = tests;
-//    }
-
 
     public List<TestResult> getTestResults() {
         return testResults;

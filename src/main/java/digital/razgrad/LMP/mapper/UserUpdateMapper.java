@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserUpdateMapper {
-    public UserUpdateDTO toDTO (User user){
+    public UserUpdateDTO toDTO(User user) {
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
         userUpdateDTO.setId(user.getId());
         userUpdateDTO.setFirstName(user.getFirstName());
@@ -22,15 +22,17 @@ public class UserUpdateMapper {
         userUpdateDTO.setInterests(user.getInterests());
         userUpdateDTO.setExperience(user.getExperience());
         userUpdateDTO.setUserRole(user.getUserRole());
+
         return userUpdateDTO;
     }
-    public User toEntity (UserUpdateDTO userUpdateDTO){
+
+    public User toEntity(UserUpdateDTO userUpdateDTO) {
         User user;
-        if (userUpdateDTO.getUserRole().equals(UserRole.ROLE_ADMIN)){
+        if (userUpdateDTO.getUserRole().equals(UserRole.ROLE_ADMIN)) {
             user = new Admin();
-        } else if (userUpdateDTO.getUserRole().equals(UserRole.ROLE_TEACHER)){
+        } else if (userUpdateDTO.getUserRole().equals(UserRole.ROLE_TEACHER)) {
             user = new Teacher();
-        }else{
+        } else {
             user = new Student();
         }
         user.setId(userUpdateDTO.getId());
@@ -44,6 +46,7 @@ public class UserUpdateMapper {
         user.setInterests(userUpdateDTO.getInterests());
         user.setExperience(userUpdateDTO.getExperience());
         user.setUserRole(userUpdateDTO.getUserRole());
+
         return user;
     }
 }

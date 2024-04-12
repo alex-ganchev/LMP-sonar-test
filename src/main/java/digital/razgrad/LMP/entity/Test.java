@@ -6,17 +6,14 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name="tests")
+@Table(name = "tests")
 public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   // @ManyToMany(mappedBy = "testSet")
-//    @ManyToMany
-//    private Set<Student> students;
+
     //@OneToOne(mappedBy = "test")
     @OneToOne
     private Lecture lecture;
@@ -46,14 +43,6 @@ public class Test {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public Set<Student> getStudents() {
-//        return students;
-//    }
-//
-//    public void setStudents(Set<Student> students) {
-//        this.students = students;
-//    }
 
     public Lecture getLecture() {
         return lecture;

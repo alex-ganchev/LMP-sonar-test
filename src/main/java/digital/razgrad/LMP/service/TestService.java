@@ -2,7 +2,6 @@ package digital.razgrad.LMP.service;
 
 import digital.razgrad.LMP.auth.MyUserDetails;
 import digital.razgrad.LMP.entity.*;
-import digital.razgrad.LMP.entity.Module;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,29 +9,54 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
 @Service
 public class TestService {
-    @Autowired
     private LectureRepository lectureRepository;
-    @Autowired
     private EntityValidator entityValidator;
-    @Autowired
     private TestRepository testRepository;
-    @Autowired
     private QuestionRepository questionRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private TestResultRepository testResultRepository;
-    @Autowired
     private TestStudentAnswerRepository testStudentAnswerRepository;
 
+    @Autowired
+    private void setLectureRepository(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
+
+    @Autowired
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
+
+    @Autowired
+    private void setTestRepository(TestRepository testRepository) {
+        this.testRepository = testRepository;
+    }
+
+    @Autowired
+    private void setQuestionRepository(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Autowired
+    private void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    private void setTestResultRepository(TestResultRepository testResultRepository) {
+        this.testResultRepository = testResultRepository;
+    }
+
+    @Autowired
+    private void setTestStudentAnswerRepository(TestStudentAnswerRepository testStudentAnswerRepository) {
+        this.testStudentAnswerRepository = testStudentAnswerRepository;
+    }
 
     public String saveTest(Test test, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         boolean isEnoughQuestionsAvailable = validateEnoughQuestionsAvailable(test);
@@ -98,7 +122,6 @@ public class TestService {
         return "/index";
 
     }
-
 
     public String deleteTest(Long id, RedirectAttributes redirectAttributes, Model model) {
         if (validateSafeDeleteTest(id)) {

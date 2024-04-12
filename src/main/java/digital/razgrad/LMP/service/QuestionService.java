@@ -4,7 +4,6 @@ import digital.razgrad.LMP.constant.AnswerType;
 import digital.razgrad.LMP.dto.QuestionRegistrationDTO;
 import digital.razgrad.LMP.entity.Answer;
 import digital.razgrad.LMP.entity.Question;
-import digital.razgrad.LMP.entity.Test;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.mapper.QuestionRegistrationMapper;
 import digital.razgrad.LMP.repository.AnswerRepository;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -24,17 +22,39 @@ import java.util.Optional;
 
 @Service
 public class QuestionService {
-    @Autowired
+
     private QuestionRepository questionRepository;
-    @Autowired
     private AnswerRepository answerRepository;
-    @Autowired
     private LectureRepository lectureRepository;
-    @Autowired
     private QuestionRegistrationMapper questionRegistrationMapper;
-    @Autowired
     private EntityValidator entityValidator;
 
+    @Autowired
+    private void setQuestionRepository(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Autowired
+
+    private void setAnswerRepository(AnswerRepository answerRepository) {
+        this.answerRepository = answerRepository;
+    }
+
+    @Autowired
+
+    private void setLectureRepository(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
+
+    @Autowired
+    private void setQuestionRegistrationMapper(QuestionRegistrationMapper questionRegistrationMapper) {
+        this.questionRegistrationMapper = questionRegistrationMapper;
+    }
+
+    @Autowired
+    private void setEntityValidator(EntityValidator entityValidator) {
+        this.entityValidator = entityValidator;
+    }
 
     public String addQuestion(Model model) {
         List<Answer> answerList = new ArrayList<>();
@@ -92,9 +112,10 @@ public class QuestionService {
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(questionRepository.existsById(id)));
             return "redirect:/question/list";
         }
-        redirectAttributes.addFlashAttribute("message","Въпроса e част от решен тест. Не може да бъде изтрит!");
+        redirectAttributes.addFlashAttribute("message", "Въпроса e част от решен тест. Не може да бъде изтрит!");
         return "redirect:/question/list";
     }
+
     @Transactional
     private Question saveQuestionWithAnswers(Question question, List<Answer> answers) {
         Question savedQuestion = questionRepository.save(question);
@@ -106,6 +127,7 @@ public class QuestionService {
         }
         return savedQuestion;
     }
+
     private boolean validateQuestionForm(QuestionRegistrationDTO questionRegistrationDTO) {
         int answerNumber = 0;
         int correctAnswer = 0;
@@ -129,7 +151,7 @@ public class QuestionService {
 
     private boolean validateSafeDeleteQuestion(Long id) {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
-        if (optionalQuestion.isPresent() && optionalQuestion.get().getTestStudentAnswerList().isEmpty() && optionalQuestion.get().getAnswerList().isEmpty()) {
+        if (optionalQuestion.isPresent() && optionalQuestion.get().getTestStudentAnswerList().isEmpty()) {
             return true;
         }
         return false;

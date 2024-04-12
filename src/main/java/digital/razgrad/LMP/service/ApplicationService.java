@@ -5,7 +5,6 @@ import digital.razgrad.LMP.entity.Application;
 import digital.razgrad.LMP.entity.Course;
 import digital.razgrad.LMP.entity.Student;
 import digital.razgrad.LMP.entity.User;
-import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.repository.ApplicationRepository;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.UserRepository;
@@ -21,28 +20,42 @@ import java.util.Optional;
 
 @Service
 public class ApplicationService {
-    @Autowired
     private ApplicationRepository applicationRepository;
-    @Autowired
     private CourseRepository courseRepository;
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private void setApplicationRepository(ApplicationRepository applicationRepository) {
+        this.applicationRepository = applicationRepository;
+    }
+
+    @Autowired
+    private void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    private void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public String addApplication(Long id, Authentication authentication, RedirectAttributes redirectAttributes, Model model) {
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         Optional<Course> optionalCourse = courseRepository.findById(id);
         if (optionalCourse.isPresent()) {
             Optional<User> optionalUser = userRepository.findById(userDetails.getId());
             if (optionalUser.isPresent()) {
-                if(validateDuplicateApplication(optionalUser.get().getId(),optionalCourse.get().getId())){
+                if (validateDuplicateApplication(optionalUser.get().getId(), optionalCourse.get().getId())) {
                     Application application = new Application((Student) optionalUser.get(), optionalCourse.get());
                     applicationRepository.save(application);
                     redirectAttributes.addFlashAttribute("message", "Кандидатствахте успешно!");
-                }else
+                } else
                     redirectAttributes.addFlashAttribute("message", "Вече сте кандитатствали за този курс!");
-                }
             }
+        }
         return "redirect:/course/list";
     }
+
     public String listAllUnProvedApplications(Model model) {
         Iterable<Application> applications = applicationRepository.findAll();
         List<Application> applicationsList = new ArrayList<>();
@@ -54,6 +67,7 @@ public class ApplicationService {
         model.addAttribute("applicationList", applicationsList);
         return "/application/list";
     }
+
     public String applicationApprove(Long id, RedirectAttributes redirectAttributes, Model model) {
         Optional<Application> optionalApplication = applicationRepository.findById(id);
         if (optionalApplication.isPresent()) {
@@ -69,13 +83,13 @@ public class ApplicationService {
                     courseRepository.save(course);
                     redirectAttributes.addFlashAttribute("message", "Успешно одобрихте кандидатурата!");
                 }
-
             }
         }
         return "redirect:/application/list";
     }
+
     private boolean validateDuplicateApplication(Long userId, Long courseId) {
-        Optional<Application> optionalApplication = applicationRepository.findByStudentIdAndCourseId(userId,courseId);
+        Optional<Application> optionalApplication = applicationRepository.findByStudentIdAndCourseId(userId, courseId);
         if (optionalApplication.isEmpty()) {
             return true;
         }

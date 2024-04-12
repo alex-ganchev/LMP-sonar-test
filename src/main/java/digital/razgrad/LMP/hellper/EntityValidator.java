@@ -1,12 +1,7 @@
 package digital.razgrad.LMP.hellper;
 
-import digital.razgrad.LMP.entity.*;
-import digital.razgrad.LMP.entity.Module;
-import digital.razgrad.LMP.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class EntityValidator {

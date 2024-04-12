@@ -3,13 +3,9 @@ package digital.razgrad.LMP.entity;
 import digital.razgrad.LMP.constant.CourseStatus;
 import digital.razgrad.LMP.constant.CourseType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
