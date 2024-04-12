@@ -6,6 +6,7 @@ import digital.razgrad.LMP.repository.LectureRepository;
 import digital.razgrad.LMP.service.LectureService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,9 +56,8 @@ public class LectureController {
     }
 
     @GetMapping("/list")
-    private String listLecture(Model model) {
-        model.addAttribute("lectureList", lectureRepository.findAll());
-        return ("/lecture/list");
+    private String listAllLecture(Model model, Authentication authentication) {
+       return lectureService.listAllLecture(model, authentication);
     }
 
     @GetMapping("/edit")

@@ -1,10 +1,16 @@
 package digital.razgrad.LMP.service;
 
+import digital.razgrad.LMP.auth.MyUserDetails;
+import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.entity.Module;
+import digital.razgrad.LMP.entity.Student;
+import digital.razgrad.LMP.entity.User;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.repository.CourseRepository;
 import digital.razgrad.LMP.repository.ModuleRepository;
+import digital.razgrad.LMP.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +24,11 @@ public class ModuleService {
     private ModuleRepository moduleRepository;
     private CourseRepository courseRepository;
     private EntityValidator entityValidator;
+    private UserRepository userRepository;
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Autowired
     private void setModuleRepository(ModuleRepository moduleRepository) {
@@ -42,6 +53,15 @@ public class ModuleService {
         }
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(moduleRepository.save(module)));
         return "redirect:/module/list";
+    }
+    public String listAllModules(Model model, Authentication authentication) {
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        if(userDetails.getRole().equals(UserRole.ROLE_STUDENT)){
+            model.addAttribute("moduleList",  moduleRepository.getModuleByStudentsId(userDetails.getId()));
+        }else{
+            model.addAttribute("moduleList",  moduleRepository.findAll());
+        }
+        return "/module/list";
     }
 
     public String editModule(@RequestParam Long id, Model model) {
