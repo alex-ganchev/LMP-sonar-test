@@ -80,7 +80,7 @@ public class UserController {
 
     @GetMapping("/access-denied")
     private String accessDenied() {
-        return "/user/access-denied";
+        return "/access-denied";
     }
 }
 
