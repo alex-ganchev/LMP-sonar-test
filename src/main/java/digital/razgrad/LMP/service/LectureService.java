@@ -68,7 +68,7 @@ public class LectureService {
             return "redirect:/lecture/select-course";
         }
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(lectureRepository.save(lecture)));
-        return "redirect:/lecture/select-course";
+        return "redirect:/lecture/list";
     }
 
     public String editLecture(@RequestParam Long id, Model model) {
@@ -102,8 +102,20 @@ public class LectureService {
     }
 
     public String deleteLecture(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
-        lectureRepository.deleteById(id);
-        redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(lectureRepository.existsById(id)));
+        if (validateSafeDeleteLecture(id)) {
+            lectureRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(lectureRepository.existsById(id)));
+        } else {
+            redirectAttributes.addFlashAttribute("message", "За лекцията има добавени тестове и/или въпроси. Не може да бъде изтрита! ");
+        }
         return "redirect:/lecture/list";
+    }
+
+    private boolean validateSafeDeleteLecture(Long id) {
+        Optional<Lecture> optionalLecture = lectureRepository.findById(id);
+        if (optionalLecture.isPresent() && optionalLecture.get().getQuestionSet().isEmpty() && optionalLecture.get().getTest() == null) {
+            return true;
+        }
+        return false;
     }
 }

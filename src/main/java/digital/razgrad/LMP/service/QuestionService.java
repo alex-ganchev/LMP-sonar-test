@@ -112,7 +112,7 @@ public class QuestionService {
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(questionRepository.existsById(id)));
             return "redirect:/question/list";
         }
-        redirectAttributes.addFlashAttribute("message", "Въпроса e част от решен тест. Не може да бъде изтрит!");
+        redirectAttributes.addFlashAttribute("message", "Въпроса e част от решен тест или въпросите ще са под критичният минумум. Не може да бъде изтрит!");
         return "redirect:/question/list";
     }
 
@@ -152,7 +152,16 @@ public class QuestionService {
     private boolean validateSafeDeleteQuestion(Long id) {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent() && optionalQuestion.get().getTestStudentAnswerList().isEmpty()) {
-            return true;
+            Question question = optionalQuestion.get();
+            if (question.getLecture().getTest() == null) {
+                return true;
+            } else {
+                int testQuestionNumber = question.getLecture().getTest().getQuestionsNumber();
+                int allQuestionNumberForLecture = questionRepository.findByLecture(question.getLecture()).size();
+                if (allQuestionNumberForLecture > testQuestionNumber) {
+                    return true;
+                }
+            }
         }
         return false;
     }
