@@ -101,14 +101,12 @@ public class TestService {
 
 
     public String deleteTest(Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (id != null) {
-            try {
-                testRepository.deleteById(id);
-            } catch (Exception SQLIntegrityConstraintViolationException) {
-                System.out.println("Error: Не можете да изтриете теста!");
-            }
+        if (validateSafeDeleteTest(id)) {
+            testRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(testRepository.existsById(id)));
+            return "redirect:/test/list";
         }
+        redirectAttributes.addFlashAttribute("message","Теста е част от решен тест. Не може да бъде изтрит!");
         return "redirect:/test/list";
     }
 
@@ -190,6 +188,13 @@ public class TestService {
             if (optionalLecture.get().getTest() != null) {
                 return true;
             }
+        }
+        return false;
+    }
+    private boolean validateSafeDeleteTest(Long id) {
+        Optional<Test> optionalTest = testRepository.findById(id);
+        if (optionalTest.isPresent() && optionalTest.get().getTestResultList().isEmpty()) {
+            return true;
         }
         return false;
     }

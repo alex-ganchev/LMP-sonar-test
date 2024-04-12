@@ -54,7 +54,7 @@ public class QuestionService {
         if (bindingResult.hasErrors() || !isValidQuestionForm) {
             model.addAttribute("answerTypeList", AnswerType.values());
             model.addAttribute("lectureList", lectureRepository.findAll());
-            model.addAttribute("message", isValidQuestionForm ? "" : "Има несъответствие в типа на въпроса и посечените отговори!");
+            model.addAttribute("message", isValidQuestionForm ? "" : "Има несъответствие в типа на въпроса и посочените отговори!");
             return "/question/add";
         }
         Question question = questionRegistrationMapper.toEntityQuestion(questionRegistrationDTO);
@@ -62,6 +62,7 @@ public class QuestionService {
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(saveQuestionWithAnswers(question, answerList)));
         return "redirect:/question/add";
     }
+
     public String editQuestion(Long id, Model model) {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent()) {
@@ -86,17 +87,25 @@ public class QuestionService {
 //    }
 
     public String deleteQuestion(Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (id != null) {
-            try {
-                questionRepository.deleteById(id);
-            } catch (Exception SQLIntegrityConstraintViolationException) {
-                System.out.println("Error: Не можете да изтриете въпроса!");
-            }
+        if (validateSafeDeleteQuestion(id)) {
+            questionRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(questionRepository.existsById(id)));
+            return "redirect:/question/list";
         }
+        redirectAttributes.addFlashAttribute("message","Въпроса e част от решен тест. Не може да бъде изтрит!");
         return "redirect:/question/list";
     }
-
+    @Transactional
+    private Question saveQuestionWithAnswers(Question question, List<Answer> answers) {
+        Question savedQuestion = questionRepository.save(question);
+        for (Answer answer : answers) {
+            if (!answer.getAnswer().isEmpty()) {
+                answer.setQuestion(savedQuestion);
+                answerRepository.save(answer);
+            }
+        }
+        return savedQuestion;
+    }
     private boolean validateQuestionForm(QuestionRegistrationDTO questionRegistrationDTO) {
         int answerNumber = 0;
         int correctAnswer = 0;
@@ -118,15 +127,11 @@ public class QuestionService {
         return false;
     }
 
-    @Transactional
-    private Question saveQuestionWithAnswers(Question question, List<Answer> answers) {
-        Question savedQuestion = questionRepository.save(question);
-        for (Answer answer : answers) {
-            if (!answer.getAnswer().isEmpty()) {
-                answer.setQuestion(savedQuestion);
-                answerRepository.save(answer);
-            }
+    private boolean validateSafeDeleteQuestion(Long id) {
+        Optional<Question> optionalQuestion = questionRepository.findById(id);
+        if (optionalQuestion.isPresent() && optionalQuestion.get().getTestStudentAnswerList().isEmpty() && optionalQuestion.get().getAnswerList().isEmpty()) {
+            return true;
         }
-        return savedQuestion;
+        return false;
     }
 }

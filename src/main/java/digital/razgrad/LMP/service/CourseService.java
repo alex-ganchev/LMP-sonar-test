@@ -68,11 +68,20 @@ public class CourseService {
     }
 
     public String deleteCourse(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (entityValidator.checkSafeDeleteCourse(id)) {
+        if (validateSafeDeleteCourse(id)) {
             courseRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(courseRepository.existsById(id)));
+            return "redirect:/course/list";
         }
-        redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(courseRepository.existsById(id)));
+        redirectAttributes.addFlashAttribute("message","Курса има добавени лектори, записани курсисти и/или добавени модули. Не може да бъде изтрит!");
         return "redirect:/course/list";
+    }
+    private boolean validateSafeDeleteCourse(Long id) {
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+        if (optionalCourse.isPresent() && optionalCourse.get().getModuleSet().isEmpty() && optionalCourse.get().getTeachers().isEmpty() && optionalCourse.get().getStudents().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
 }

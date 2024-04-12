@@ -32,13 +32,12 @@ public class ModuleService {
             return "/module/add";
         }
         redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(moduleRepository.save(module)));
-        return "redirect:/module/add";
+        return "redirect:/module/list";
     }
 
     public String editModule(@RequestParam Long id, Model model) {
         Optional<Module> optionalModule = moduleRepository.findById(id);
         if (optionalModule.isPresent()) {
-           // model.addAttribute("courseList", courseRepository.findAll());
             model.addAttribute("courseList", courseRepository.findAll());
             model.addAttribute("module", optionalModule.get());
             model.addAttribute("studentList", optionalModule.get().getCourse().getStudents());
@@ -49,7 +48,7 @@ public class ModuleService {
 
     public String updateModule(Module module, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-           // model.addAttribute("courseList", courseRepository.findAll());
+            model.addAttribute("courseList", courseRepository.findAll());
             model.addAttribute("studentList", module.getCourse().getStudents());
             model.addAttribute("module", module);
             return "/module/edit";
@@ -59,10 +58,19 @@ public class ModuleService {
     }
 
     public String deleteModule(@RequestParam Long id, RedirectAttributes redirectAttributes, Model model) {
-        if (entityValidator.checkSafeDeleteModule(id)) {
+        if (validateSafeDeleteModule(id)) {
             moduleRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(moduleRepository.existsById(id)));
+            return "redirect:/module/list";
         }
-        redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(moduleRepository.existsById(id)));
+        redirectAttributes.addFlashAttribute("message","Модула има записани курсисти и/или добавени лекции. Не може да бъде изтрит!");
         return "redirect:/module/list";
+    }
+    private boolean validateSafeDeleteModule(Long id) {
+        Optional<Module> optionalModule = moduleRepository.findById(id);
+        if (optionalModule.isPresent() && optionalModule.get().getStudents().isEmpty() && optionalModule.get().getLectureSet().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }
