@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label class="text-white" for="username">Потребителско име</label>
                     <div class="message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-                    <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Потребителско име">
+                    <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Потребителско име" readonly>
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="password">Парола*</label>
@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label class="text-white" for="email">Електронна поща</label>
                     <div class="message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Електронна поща">
+                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Електронна поща" readonly>
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="age">Години*</label>
