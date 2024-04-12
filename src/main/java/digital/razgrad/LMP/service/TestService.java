@@ -106,7 +106,7 @@ public class TestService {
             redirectAttributes.addFlashAttribute("message", entityValidator.checkDeleteSuccess(testRepository.existsById(id)));
             return "redirect:/test/list";
         }
-        redirectAttributes.addFlashAttribute("message","Теста е част от решен тест. Не може да бъде изтрит!");
+        redirectAttributes.addFlashAttribute("message", "Теста е част от решен тест. Не може да бъде изтрит!");
         return "redirect:/test/list";
     }
 
@@ -119,7 +119,7 @@ public class TestService {
         return "redirect/test/result";
     }
 
-    public String updateTestResult(TestResult testResult,RedirectAttributes redirectAttributes, Model model) {
+    public String updateTestResult(TestResult testResult, RedirectAttributes redirectAttributes, Model model) {
         Optional<TestResult> optionalTestResult = testResultRepository.findById(testResult.getId());
         if (optionalTestResult.isPresent()) {
             List<TestStudentAnswer> testStudentAnswerList = optionalTestResult.get().getTestStudentAnswerList();
@@ -156,7 +156,6 @@ public class TestService {
     }
 
     private boolean isTestPassed(int studentTestPoints, int maxTestPoints, int minPassingPercentage) {
-        System.out.println((studentTestPoints / (double) maxTestPoints * 100.00));
         if ((studentTestPoints / (double) maxTestPoints * 100.00) >= minPassingPercentage) {
             return true;
         }
@@ -170,6 +169,10 @@ public class TestService {
         Random rand = new Random();
         while (questionSet.size() < test.getQuestionsNumber()) {
             int randomQuestionNumber = rand.nextInt(questionNumber);
+            Question randomQuestion = allQuestionByLecture.get(randomQuestionNumber);
+            List<Answer> questionAnswerList = randomQuestion.getAnswerList();
+            List<Answer> questionRandomAnswerList = questionRandomAnswerList(questionAnswerList);
+            randomQuestion.setAnswerList(questionRandomAnswerList);
             questionSet.add(allQuestionByLecture.get(randomQuestionNumber));
         }
         return questionSet;
@@ -191,11 +194,21 @@ public class TestService {
         }
         return false;
     }
+
     private boolean validateSafeDeleteTest(Long id) {
         Optional<Test> optionalTest = testRepository.findById(id);
         if (optionalTest.isPresent() && optionalTest.get().getTestResultList().isEmpty()) {
             return true;
         }
         return false;
+    }
+
+    private List<Answer> questionRandomAnswerList(List<Answer> answerList) {
+        Set<Answer> answerSet = new HashSet<>();
+        for (Answer answer : answerList) {
+            answer.setCorrect(false);
+            answerSet.add(answer);
+        }
+        return new ArrayList<>(answerSet);
     }
 }
