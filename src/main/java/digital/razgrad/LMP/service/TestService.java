@@ -7,6 +7,7 @@ import digital.razgrad.LMP.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -106,21 +107,29 @@ public class TestService {
 
     }
 
-    public String finishTest(TestResult testResult, Authentication authentication, Model model) {
+    public String finishTest(TestResult testResult, Authentication authentication, RedirectAttributes redirectAttributes, Model model) {
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         Optional<User> optionalUser = userRepository.findById(userDetails.getId());
         List<TestStudentAnswer> testStudentAnswerList = testResult.getTestStudentAnswerList();
         if (optionalUser.isPresent()) {
             testResult.setStudent((Student) optionalUser.get());
-            TestResult savedTestResult = testResultRepository.save(testResult);
-            for (TestStudentAnswer studentAnswer : testStudentAnswerList) {
-                studentAnswer.setStudent((Student) optionalUser.get());
-                studentAnswer.setTestResult(savedTestResult);
-                testStudentAnswerRepository.save(studentAnswer);
-            }
+            Student student = (Student) optionalUser.get();
+            saveTestResultWithAnswers(testResult, testStudentAnswerList,student);
+            redirectAttributes.addFlashAttribute("message", entityValidator.checkSaveSuccess(saveTestResultWithAnswers(testResult, testStudentAnswerList,student)));
         }
-        return "/index";
 
+        return "redirect:/";
+
+    }
+    @Transactional
+    private TestResult saveTestResultWithAnswers(TestResult testResult, List<TestStudentAnswer> testStudentAnswerList, Student student) {
+        TestResult savedTestResult = testResultRepository.save(testResult);
+        for (TestStudentAnswer studentAnswer : testStudentAnswerList) {
+            studentAnswer.setStudent(student);
+            studentAnswer.setTestResult(savedTestResult);
+            testStudentAnswerRepository.save(studentAnswer);
+            }
+        return savedTestResult;
     }
 
     public String deleteTest(Long id, RedirectAttributes redirectAttributes, Model model) {
