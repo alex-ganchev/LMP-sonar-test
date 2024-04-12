@@ -1,11 +1,9 @@
 <link th:replace="~{fragment/config.html}">
 <div class="menu sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand me-5" href="../..">
-                <img src="/images/icon.png" alt="" width="33" height="33" class="d-inline-block align-text-top">
-                 ОБУЧЕНИЯ
-            </a>
+                <img src="/images/icon.png" alt="" width="33" height="33" class="d-inline-block align-text-top"> ОБУЧЕНИЯ </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -15,65 +13,103 @@
                         <a class="nav-link active" aria-current="page" href="../..">НАЧАЛО</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="courseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            КУРСОВЕ
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" id="courseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> КУРСОВЕ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../course/add">ДОБАВИ</a></li>
-                            <li><a class="dropdown-item" href="../course/list">СПИСЪК</a></li>
-                            <li><a class="dropdown-item" href="../application/list">КАНДИДАТИ</a></li>
+                            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                                <li>
+                                    <a class="dropdown-item" href="../course/add">ДОБАВИ</a>
+                                </li>
+                            </div>
+                            <li>
+                                <a class="dropdown-item" href="../course/list">СПИСЪК</a>
+                            </li>
+                            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                                <li>
+                                    <a class="dropdown-item" href="../application/list">КАНДИДАТИ</a>
+                                </li>
+                            </div>
                         </ul>
                     </li>
+                    <div sec:authorize="isAuthenticated()">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="moduleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> МОДУЛИ </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                                <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                                    <li>
+                                        <a class="dropdown-item" href="../module/add">ДОБАВИ</a>
+                                    </li>
+                                </div>
+                                <li>
+                                    <a class="dropdown-item" href="../module/list">СПИСЪК</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="moduleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            МОДУЛИ
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" id="lectureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ЛЕКЦИИ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../module/add">ДОБАВИ</a></li>
-                            <li><a class="dropdown-item" href="../module/list">СПИСЪК</a></li>
+                            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                            <li>
+                                <a class="dropdown-item" href="../lecture/select-course">ДОБАВИ</a>
+                            </li>
+                            </div>
+                            <li>
+                                <a class="dropdown-item" href="../lecture/list">СПИСЪК</a>
+                            </li>
                         </ul>
                     </li>
+                    </div>
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="lectureDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ЛЕКЦИИ
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ТЕСТОВЕ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../lecture/select-course">ДОБАВИ</a></li>
-                            <li><a class="dropdown-item" href="../lecture/list">СПИСЪК</a></li>
+                            <li>
+                                <a class="dropdown-item" href="../test/add">ДОБАВИ</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="../test/list">СПИСЪК</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="../test/result">ПРОВЕРИ</a>
+                            </li>
                         </ul>
                     </li>
+                    </div>
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ТЕСТОВЕ
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" id="questionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ВЪПРОСИ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../test/add">ДОБАВИ</a></li>
-                            <li><a class="dropdown-item" href="../test/list">СПИСЪК</a></li>
-                            <li><a class="dropdown-item" href="../test/result">ПРОВЕРИ</a></li>
+                            <li>
+                                <a class="dropdown-item" href="../question/add">ДОБАВИ</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="../question/list">СПИСЪК</a>
+                            </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="questionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ВЪПРОСИ
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../question/add">ДОБАВИ</a></li>
-                            <li><a class="dropdown-item" href="../question/list">СПИСЪК</a></li>
-                        </ul>
-                    </li>
+                    </div>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                           <span th:if="${#authorization.expression('isAuthenticated()')}">
-                            <span style="text-transform:uppercase" th:text="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}"></span>
+                            <span th:if="${#authorization.expression('isAuthenticated()')}">
+										<span style="text-transform:uppercase" th:text="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}"></span>
                             </span>
                             <span th:unless="${#authorization.expression('isAuthenticated()')}">
                              ПОТРЕБИТЕЛ
                               </span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li th:unless="${#authorization.expression('isAuthenticated()')}" ><a class="dropdown-item" href="../login">ВХОД</a></li>
-                            <li th:unless="${#authorization.expression('isAuthenticated()')}"><a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a></li>
-                            <li th:unless="${#authorization.expression('!isAuthenticated()')}"><a class="dropdown-item" href="../user/list">СПИСЪК</a></li>
+                            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+                                <a class="dropdown-item" href="../login">ВХОД</a>
+                            </li>
+                            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+                                <a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a>
+                            </li>
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                            <li>
+                                <a class="dropdown-item" href="../user/list">СПИСЪК</a>
+                            </li>
+                            </div>
                             <li th:unless="${#authorization.expression('!isAuthenticated')}">
                                 <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
                                 <form th:action="@{/logout?redirect=../}" method="post">
@@ -87,4 +123,3 @@
         </div>
     </nav>
 </div>
-

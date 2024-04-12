@@ -19,8 +19,10 @@
                     <th scope="col">Презентация</th>
                     <th scope="col">Видео</th>
                     <th scope="col">Тест</th>
-                    <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
-                    <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                    <th></th>
+                    <th></th>
+                    </div>
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -55,7 +57,8 @@
                         </span>
                         <span th:if="${lecture.test == null}">Липсва</span>
                     </td>
-                    <td th:if="${#authorization.expression('isAuthenticated()')}">
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                    <td>
                         <form th:action="@{/lecture/edit}" th:object="${id}" method="get">
                             <input type="hidden" name="id" th:value="${lecture.id}" />
                             <input class="btn btn-warning btn-block" type="submit" value="Редактирай"/>
@@ -67,6 +70,7 @@
                             <input class="btn btn-danger btn-block" type="submit" value="Изтрий"/>
                         </form>
                     </td>
+                    </div>
                 </tr>
                 </tbody>
             </table>

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <link th:replace="~{fragment/header.html}">
     <title>Добавяне на курс</title>
 </head>
+
 <body>
 <h2 class="text-center p-4 text-white">ДОБАВИ КУРС</h2>
 <div class="container">
@@ -41,9 +43,7 @@
                     <label class="text-white" for="name">Лектори</label>
                     <div class="message" th:if="${#fields.hasErrors('teachers')}" th:errors="*{teachers}"></div>
                     <select class="form-select" multiple th:field="*{teachers}">
-                        <option th:each="teacher : ${teacherList}"
-                                th:text="${teacher.firstName + ' ' + teacher.lastName}"
-                                th:value="${teacher.id}">
+                        <option th:each="teacher : ${teacherList}" th:text="${teacher.firstName + ' ' + teacher.lastName}" th:value="${teacher.id}">
                     </select>
                 </div>
                 <div class="row justify-content-center ">
@@ -59,7 +59,8 @@
     </div>
 </div>
 <div class="savemessage">
-    <p style="text-align:center" th:text="|${message}|"/></p>
+    <p style="text-align:center" th:text="|${message}|" /></p>
 </div>
 </body>
+
 </html>

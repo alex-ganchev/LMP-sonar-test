@@ -26,9 +26,14 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/", "/style.css", "/images/**", "/course/list", "/registration", "/access-denied").permitAll()
+                        .requestMatchers( "/profile","/module/list","/lecture/list","/application","/profile/edit").authenticated()
+                        .requestMatchers( "/application","/test/start","/test/finish").hasAuthority( "ROLE_STUDENT")
+                        .requestMatchers( "/application/**","/course/**","/module/**","/lecture/**","/test/**","/question/**").hasAnyAuthority( "ROLE_TEACHER", "ROLE_ADMIN")
+                        .requestMatchers( "/**").hasAuthority( "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
+
 
                 .formLogin((form) -> form
                         .loginPage("/login")

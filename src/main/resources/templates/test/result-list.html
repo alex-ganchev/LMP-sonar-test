@@ -22,7 +22,7 @@
                     <th scope="col">Курсист</th>
                     <th scope="col">Брой точки</th>
                     <th scope="col">Взет</th>
-                    <th th:if="${!#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -60,7 +60,7 @@
                     <td>
                         <span th:text="${testResult.testPassed ? 'Да' : 'Не'}"></span>
                     </td>
-                    <td th:if="${!#authorization.expression('isAuthenticated()')}">
+                    <td>
                         <form th:action="@{/test/check}" th:object="${id}" method="get">
                             <input type="hidden" name="id" th:value="${testResult.id}" />
                             <input class="btn btn-warning btn-block" type="submit" value="Провери" />

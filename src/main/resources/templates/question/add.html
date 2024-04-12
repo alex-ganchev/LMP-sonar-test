@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <link th:replace="~{fragment/header.html}">
     <title>Добавяне на въпрос</title>
 </head>
+
 <body>
 <h2 class="text-center p-4 text-white">ДОБАВИ ВЪПРОС</h2>
 <div class="container">
@@ -29,9 +31,9 @@
                     </select>
                 </div>
                 <div th:each="answer, itemStat : *{answerList}">
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label class="text-white" for="answer">Отговор</label>
-                        <input type="text" class="form-control" id="answer" th:field="*{answerList[__${itemStat.index}__].answer}" >
+                        <input type="text" class="form-control" id="answer" th:field="*{answerList[__${itemStat.index}__].answer}">
                     </div>
                     <div class="form-group">
                         <label class="form-check-label text-white">
@@ -57,7 +59,8 @@
     </div>
 </div>
 <div class="savemessage">
-    <p style="text-align:center" th:text="|${message}|"/></p>
+    <p style="text-align:center" th:text="|${message}|" /></p>
 </div>
 </body>
+
 </html>

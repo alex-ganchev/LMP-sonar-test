@@ -18,8 +18,10 @@
                 <th scope="col">Начална дата</th>
                 <th scope="col">Лекции</th>
                 <th scope="col">Участници</th>
-                <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
-                <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
+                <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
+                    <th></th>
+                    <th></th>
+                </div>
             </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -41,6 +43,7 @@
                     <li th:each="student : ${module.students}" th:text="${student.firstName + ' ' + student.lastName }"></li>
                     </ul>
                 </td>
+                <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                 <td th:if="${#authorization.expression('isAuthenticated()')}">
                     <form th:action="@{/module/edit}" th:object="${id}" method="get">
                         <input type="hidden" name="id" th:value="${module.id}" />
@@ -53,6 +56,7 @@
                         <input class="btn btn-danger btn-block" type="submit" value="Изтрий"/>
                     </form>
                 </td>
+                </div>
             </tr>
             </tbody>
         </table>

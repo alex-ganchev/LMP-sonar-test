@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <link th:replace="~{fragment/header.html}">
     <title>Редактиране на модул</title>
 </head>
+
 <body>
 <h2 class="text-center p-4 text-white">РЕДАКТИРАЙ МОДУЛ</h2>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4 col-auto">
             <form action="" th:action="@{/module/edit}" th:object="${module}" method="post">
-                <input type="hidden" name="id" th:value="${module.id}"/>
+                <input type="hidden" name="id" th:value="${module.id}" />
                 <div class="form-group">
                     <label class="text-white" for="name">Наименование*</label>
                     <div class="message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
@@ -23,22 +25,20 @@
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="course">Курс*</label>
-                    <select class="form-select" id="course" th:field="*{course}" >
+                    <select class="form-select" id="course" th:field="*{course}">
                         <option th:each="course : ${courseList}" th:text="${course.name}" th:value="${course.id}">
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="date">Дата*</label>
-                    <div class="message" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" ></div>
+                    <div class="message" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
                     <input type="date" class="form-control" id="date" th:field="*{startDate}">
                 </div>
                 <div class="form-group">
                     <label class="text-white" for="name">Участници</label>
                     <div class="message" th:if="${#fields.hasErrors('students')}" th:errors="*{students}"></div>
                     <select class="form-select" multiple th:field="*{students}">
-                        <option th:each="student : ${studentList}"
-                                th:text="${student.firstName + ' ' + student.lastName}"
-                                th:value="${student.id}">
+                        <option th:each="student : ${studentList}" th:text="${student.firstName + ' ' + student.lastName}" th:value="${student.id}">
                     </select>
                 </div>
                 <div class="row justify-content-center ">
@@ -54,7 +54,8 @@
     </div>
 </div>
 <div class="savemessage">
-    <p style="text-align:center" th:text="|${message}|"/></p>
+    <p style="text-align:center" th:text="|${message}|" /></p>
 </div>
 </body>
+
 </html>

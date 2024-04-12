@@ -19,8 +19,8 @@
                     <th scope="col">Тип</th>
                     <th scope="col">Отговори</th>
                     <th scope="col">Точки</th>
-                    <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
-                    <th th:if="${#authorization.expression('isAuthenticated()')}" class="col-1" scope="col"></th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -43,13 +43,13 @@
                     </td>
 
                     <td><span th:text="${question.points}"> Точки </span></td>
-                    <td th:if="${#authorization.expression('isAuthenticated()')}">
+                    <td>
                         <form th:action="@{/question/edit}" th:object="${id}" method="get">
                             <input type="hidden" name="id" th:value="${question.id}" />
                             <input class="btn btn-warning btn-block" type="submit" value="Редактирай"/>
                         </form>
                     </td>
-                    <td th:if="${#authorization.expression('isAuthenticated()')}">
+                    <td>
                         <form th:action="@{/question/delete}" th:object="${id}" method="post">
                             <input type="hidden" name="id" th:value="${question.id}" />
                             <input class="btn btn-danger btn-block" type="submit" value="Изтрий"/>
