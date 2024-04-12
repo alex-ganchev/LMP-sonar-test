@@ -60,6 +60,7 @@
                         </ul>
                     </li>
                     </div>
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ТЕСТОВЕ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
@@ -74,6 +75,8 @@
                             </li>
                         </ul>
                     </li>
+                    </div>
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="questionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> ВЪПРОСИ </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
@@ -85,6 +88,7 @@
                             </li>
                         </ul>
                     </li>
+                    </div>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span th:if="${#authorization.expression('isAuthenticated()')}">
@@ -101,9 +105,11 @@
                             <li th:unless="${#authorization.expression('isAuthenticated()')}">
                                 <a class="dropdown-item" href="../registration">РЕГИСТРАЦИЯ</a>
                             </li>
-                            <li th:unless="${#authorization.expression('!isAuthenticated()')}">
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                            <li>
                                 <a class="dropdown-item" href="../user/list">СПИСЪК</a>
                             </li>
+                            </div>
                             <li th:unless="${#authorization.expression('!isAuthenticated')}">
                                 <a class="dropdown-item" href="../profile">ПРОФИЛ</a>
                                 <form th:action="@{/logout?redirect=../}" method="post">

@@ -27,9 +27,9 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/style.css", "/images/**", "/course/list", "/registration", "/access-denied").permitAll()
-                        .requestMatchers( "/profile","/module/list","/lecture/list","/application").authenticated()
-                        .requestMatchers( "/application").hasAuthority( "ROLE_STUDENT")
-                        .requestMatchers( "/application/**","/course/**","/module/**","/lecture/**").hasAnyAuthority( "ROLE_TEACHER", "ROLE_ADMIN")
+                        .requestMatchers( "/profile","/module/list","/lecture/list","/application","/profile/edit").authenticated()
+                        .requestMatchers( "/application","/test/start","/test/finish").hasAuthority( "ROLE_STUDENT")
+                        .requestMatchers( "/application/**","/course/**","/module/**","/lecture/**","/test/**","/question/**").hasAnyAuthority( "ROLE_TEACHER", "ROLE_ADMIN")
                         .requestMatchers( "/**").hasAuthority( "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
