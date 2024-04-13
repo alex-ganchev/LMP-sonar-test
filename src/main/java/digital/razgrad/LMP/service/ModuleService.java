@@ -96,7 +96,7 @@ public class ModuleService {
         return "redirect:/module/list";
     }
 
-    private boolean validateSafeDeleteModule(Long id) {
+    public boolean validateSafeDeleteModule(Long id) {
         Optional<Module> optionalModule = moduleRepository.findById(id);
         if (optionalModule.isPresent() && optionalModule.get().getStudents().isEmpty() && optionalModule.get().getLectureSet().isEmpty()) {
             return true;
