@@ -88,7 +88,7 @@ public class ApplicationService {
         return "redirect:/application/list";
     }
 
-    private boolean validateDuplicateApplication(Long userId, Long courseId) {
+    public boolean validateDuplicateApplication(Long userId, Long courseId) {
         Optional<Application> optionalApplication = applicationRepository.findByStudentIdAndCourseId(userId, courseId);
         if (optionalApplication.isEmpty()) {
             return true;
