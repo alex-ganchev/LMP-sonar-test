@@ -87,7 +87,7 @@ public class CourseService {
         return "redirect:/course/list";
     }
 
-    private boolean validateSafeDeleteCourse(Long id) {
+    public boolean validateSafeDeleteCourse(Long id) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
         if (optionalCourse.isPresent() && optionalCourse.get().getModuleSet().isEmpty() && optionalCourse.get().getTeachers().isEmpty() && optionalCourse.get().getStudents().isEmpty()) {
             return true;

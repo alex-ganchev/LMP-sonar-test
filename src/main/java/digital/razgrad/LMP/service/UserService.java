@@ -2,15 +2,10 @@ package digital.razgrad.LMP.service;
 
 
 import digital.razgrad.LMP.auth.MyUserDetails;
-import digital.razgrad.LMP.constant.CourseStatus;
-import digital.razgrad.LMP.constant.CourseType;
 import digital.razgrad.LMP.constant.UserRole;
 import digital.razgrad.LMP.dto.UserProfileDTO;
 import digital.razgrad.LMP.dto.UserRegistrationDTO;
 import digital.razgrad.LMP.dto.UserUpdateDTO;
-import digital.razgrad.LMP.entity.Course;
-import digital.razgrad.LMP.entity.Student;
-import digital.razgrad.LMP.entity.Teacher;
 import digital.razgrad.LMP.entity.User;
 import digital.razgrad.LMP.hellper.EntityValidator;
 import digital.razgrad.LMP.mapper.UserProfileMapper;
@@ -18,13 +13,11 @@ import digital.razgrad.LMP.mapper.UserRegistrationMapper;
 import digital.razgrad.LMP.mapper.UserUpdateMapper;
 import digital.razgrad.LMP.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -86,7 +79,6 @@ public class UserService {
         }
         return "redirect:/";
     }
-
     public String listAllUsers(Model model) {
         Iterable<User> userIterable = userRepository.findAll();
         List<UserProfileDTO> UserProfileDTOList = new ArrayList<>();
@@ -96,7 +88,6 @@ public class UserService {
         model.addAttribute("userList", UserProfileDTOList);
         return "/user/list";
     }
-
     public String editUser(Long id, Model model) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
