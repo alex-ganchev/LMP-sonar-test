@@ -18,4 +18,3 @@ LEARNING MANAGMENT PLATFORM<br><br>
 Да разглеждат лекции
 Да правят тестове
 </p>
-</div>![Screenshot 2024-04-13 160647](https://github.com/alex-ganchev/learning-management-platform/assets/135421744/d9e65636-474b-403c-abad-695c248c01b7)
