@@ -126,7 +126,7 @@ public class LectureService {
         return "redirect:/lecture/list";
     }
 
-    private boolean validateSafeDeleteLecture(Long id) {
+    public boolean validateSafeDeleteLecture(Long id) {
         Optional<Lecture> optionalLecture = lectureRepository.findById(id);
         if (optionalLecture.isPresent() && optionalLecture.get().getQuestionSet().isEmpty() && optionalLecture.get().getTest() == null) {
             return true;
